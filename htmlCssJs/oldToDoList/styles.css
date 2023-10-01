@@ -1,0 +1,42 @@
+body{
+    background-color: bisque;
+}
+
+#app{
+    margin-left: 40% ;}
+
+.to-do{
+    display: flex;
+    width: 165px;
+}
+
+.check-box-unchecked{
+    padding: 20px;
+    margin-bottom: 7px;
+    margin-right: 10px;
+    background-color: rgb(117, 117, 117);
+    border-radius: 22px;
+}
+
+
+.check-box-checked{
+    padding: 20px;
+    margin-bottom: 7px;
+    margin-right: 10px;
+    background-color: rgb(239, 17, 17);
+    border-radius: 22px;
+}
+
+
+.delete-box{
+    padding: 10px;
+    position: absolute;
+    margin-bottom: 7px;
+    margin-left: 200px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 5px;
+}
+
+.input-box{
+    margin-left: 30px;
+}
