@@ -9,4 +9,4 @@ These projects typially
 In the htmlCssJs contains projects that are created using HTML, CSS and JS. 
 - Digital Clock
 - Expense Calcualtor
-- To Do App INCOMPLETE
+- To Do App

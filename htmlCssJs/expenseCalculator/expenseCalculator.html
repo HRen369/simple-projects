@@ -5,6 +5,43 @@
     </head>
 
     <body>
+        <div id="app">
+            <h1>Expense Tracker</h1>
+            <h5 class="">Add a new item</h5>
+            
+            <div>
+                <label for="payment-type">Type:</label>
+                <select id="payment-type" name="payment-type">
+                    <option value="Credit">Credit</option>
+                    <option value="Debit">Debit</option>
+                    <option value="Cash">Cash</option>
+                </select>
+                <label>Name:</label>
+                <input id="payment-name" type="text">
+            </div>
+
+            <div>
+                <label>Date:</label>
+                <input id="payment-date" type="date">
+                <label>Amount</label>
+                <input id="payment-amount" type="text">
+            </div>
+
+            <button onclick="submitItem()">Add Expense</button>
+
+            <table id="expense-table">
+                <tr>
+                    <th>Type</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Amount</th>
+                    <th></th>
+                </tr>
+                <tbody id="expense-tbody">
+
+                </tobdy>
+            </table>
+        </div>    
 
         <link rel="stylesheet" href="styles.css">
         <script src="script.js"></script>
