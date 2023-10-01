@@ -7,6 +7,6 @@ These projects typially
 - And avoid libraries and frameworks
 
 In the htmlCssJs contains projects that are created using HTML, CSS and JS. 
-- Digital Clock INCOMPLETE
+- Digital Clock
 - Expense Calcualtor INCOMPLETE
 - To Do App INCOMPLETE
