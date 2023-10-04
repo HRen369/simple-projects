@@ -15,7 +15,7 @@ This program requires you to have a .env file with the following variables.
 - `MASTER_FILE_NAME`: The name of your encrypted master file.
 
 If you want to get started immediately, you can use `python generateDotEnv.py` to create a default `.env` file. 
-NOTE: DO NOT call the file twice when you have a encryptedMasterFile in your folder. This will override your encryptedMasterFile. There are currently no safeggaurds against this.
+NOTE: There's a basic failsafe that checks if a `.env` file exisits. DO NOT rely on it to work the entire time. Backup your encrypted file before testing it.
 
 ## Steps(for Windows 10)
 1. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser

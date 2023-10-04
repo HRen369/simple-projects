@@ -55,6 +55,7 @@ def writeEncryptedMasterFile(encryptedMasterFile):
     with open(MASTER_FILE_NAME, "w") as file:
         file.write(str(encryptedMasterFile.hex()))
 
+# Viewing Accounts Functionality
 def viewAccount():
 
     encryptedMasterFile = readEncryptedMasterFile()
@@ -94,7 +95,7 @@ def viewAccount():
 
 
 
-# Adding Accounts functionality
+# Adding Accounts Functionality
 def addAccountDetailsScreen():
     clear()
     print("__________________________")
@@ -135,8 +136,56 @@ def addAccount():
     print("__________________________")
     input("Press Enter to continue >")   
 
+# Deleting Accounts Functionality
 def deleteAccount():
-    pass
+    encryptedMasterFile = readEncryptedMasterFile()
+    decryptedMasterFileAccounts = decryptMasterFile(encryptedMasterFile)
+
+    clear()
+    print("__________________________")
+    print("*|Deleting Accounts")
+    print("*|-----------------------")    
+    print("*|[Q] Quit")
+    print("__________________________")
+
+    if len(decryptedMasterFileAccounts) == 0:
+        print("No Accounts to Delete")
+        print("__________________________")
+        input("Press Enter to continue >")
+    else:
+        for i in range(len(decryptedMasterFileAccounts)):
+            websiteName = decryptedMasterFileAccounts[i]["websiteName"]
+            print(f"*|   [{i+1}] {websiteName}")
+
+        print("__________________________")
+        ans = input(">")
+        intAns = int(ans) - 1
+
+        pickedAccount = decryptedMasterFileAccounts[intAns]
+
+        clear()
+        print("__________________________")
+        print("*|Deleting Account")
+        print("*|-----------------------")    
+        print(f"*|   Website Name: {pickedAccount['websiteName']}")
+        print(f"*|   Username: {pickedAccount['username']}")
+        print(f"*|   Password: {pickedAccount['password']}")
+        print("__________________________")
+
+        ans = input("Are you sure you want to delete (Y/N) > ")
+
+
+        if ans == "y" or ans == "Y":
+            decryptedMasterFileAccounts.pop(intAns)
+
+            encryptedMasterFile = encryptMasterFile(decryptedMasterFileAccounts)
+            writeEncryptedMasterFile(encryptedMasterFile)
+
+            print("__________________________")
+            print("Account Successfully deleted!")
+            print("__________________________")
+            input("Press Enter to continue >")        
+
 
 def mainMenuScreen():
     clear()
@@ -161,15 +210,13 @@ def mainMenu():
             viewAccount()
         elif ans == "2":
             addAccount()
-        elif ans == 3:
+        elif ans == "3":
             deleteAccount()
         elif ans == "q" or ans == "Q":
             running = False
 
 def main():
     mainMenu()
-
-
 
 if __name__ == "__main__":
     main()
