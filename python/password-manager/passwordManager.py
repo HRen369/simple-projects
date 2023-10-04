@@ -10,15 +10,14 @@ clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 load_dotenv()
 
 def readEncryptedMasterFile():
-    if os.path.isfile("encryptedMasterFile"):
-        with open("encryptedMasterFile","r") as file:
+    MASTER_FILE = os.environ("MASTER_FILE")
+    if os.path.isfile(MASTER_FILE):
+        with open(MASTER_FILE,"r") as file:
             return file.read()
     return ""
 
 def decryptMasterFile(encryptedMasterFile):
-    print(encryptedMasterFile)
     if encryptedMasterFile == "":
-        print("aaaa")
         return []
     else:
         key = os.environ.get('KEY')
@@ -52,7 +51,8 @@ def encryptMasterFile(decryptedMasterFile):
     return cipher.encrypt(padded_bytesDMF)
 
 def writeEncryptedMasterFile(encryptedMasterFile):
-    with open("encryptedMasterFile", "w") as file:
+    MASTER_FILE = os.environ("MASTER_FILE")
+    with open(MASTER_FILE, "w") as file:
         file.write(str(encryptedMasterFile.hex()))
 
 def viewAccount():
