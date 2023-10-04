@@ -10,9 +10,9 @@ clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 load_dotenv()
 
 def readEncryptedMasterFile():
-    MASTER_FILE = os.environ("MASTER_FILE")
-    if os.path.isfile(MASTER_FILE):
-        with open(MASTER_FILE,"r") as file:
+    MASTER_FILE_NAME = os.environ.get("MASTER_FILE_NAME")
+    if os.path.isfile(MASTER_FILE_NAME):
+        with open(MASTER_FILE_NAME,"r") as file:
             return file.read()
     return ""
 
@@ -51,12 +51,47 @@ def encryptMasterFile(decryptedMasterFile):
     return cipher.encrypt(padded_bytesDMF)
 
 def writeEncryptedMasterFile(encryptedMasterFile):
-    MASTER_FILE = os.environ("MASTER_FILE")
-    with open(MASTER_FILE, "w") as file:
+    MASTER_FILE_NAME = os.environ.get("MASTER_FILE_NAME")
+    with open(MASTER_FILE_NAME, "w") as file:
         file.write(str(encryptedMasterFile.hex()))
 
 def viewAccount():
-    pass
+
+    encryptedMasterFile = readEncryptedMasterFile()
+    decryptedMasterFileAccounts = decryptMasterFile(encryptedMasterFile)
+
+    clear()
+    print("__________________________")
+    print("*|View Accounts")
+    print("*|-----------------------")    
+    print("*|[Q] Quit")
+    print("__________________________")
+
+    if len(decryptedMasterFileAccounts) == 0:
+        print("No Accounts to View")
+        print("__________________________")
+        input("Press Enter to continue >")
+    else:
+        for i in range(len(decryptedMasterFileAccounts)):
+            websiteName = decryptedMasterFileAccounts[i]["websiteName"]
+            print(f"*|   [{i+1}] {websiteName}")
+
+        print("__________________________")
+        ans = input(">")
+        intAns = int(ans) - 1
+
+        pickedAccount = decryptedMasterFileAccounts[intAns]
+
+        clear()
+        print("__________________________")
+        print("*|Viewing Account")
+        print("*|-----------------------")    
+        print(f"*|   Website Name: {pickedAccount['websiteName']}")
+        print(f"*|   Username: {pickedAccount['username']}")
+        print(f"*|   Password: {pickedAccount['password']}")
+        print("__________________________")
+        input("Press Enter to continue >")        
+
 
 
 # Adding Accounts functionality
@@ -88,24 +123,17 @@ def addAccountDetails():
     }
 
 def addAccount():
-    account = {
-        "websiteName":"github",
-        "username":"Afv58", 
-        "password":"samplePassword",
-    }
+    account =  addAccountDetails() #{ "websiteName":"github", "username":"Afv58", "password":"samplePassword"}
 
     encryptedMasterFile = readEncryptedMasterFile()
     decryptedMasterFile = decryptMasterFile(encryptedMasterFile)
     decryptedMasterFile.append(account)
-    print(decryptedMasterFile)
     
     encryptedMasterFile = encryptMasterFile(decryptedMasterFile)
-    print(encryptedMasterFile)
-
     writeEncryptedMasterFile(encryptedMasterFile)
     
-    input("> ")
-    # # Need function that encryots and decrypts string
+    print("__________________________")
+    input("Press Enter to continue >")   
 
 def deleteAccount():
     pass
@@ -129,7 +157,7 @@ def mainMenu():
         mainMenuScreen()
         ans = input("> ")
         
-        if ans == 1:
+        if ans == "1":
             viewAccount()
         elif ans == "2":
             addAccount()
