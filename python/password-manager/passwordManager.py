@@ -214,8 +214,12 @@ def deleteAccount():
         if ans == "y" or ans == "Y":
             decryptedMasterFileAccounts.pop(accountIndex)
 
-            encryptedMasterFile = encryptMasterFile(decryptedMasterFileAccounts)
-            writeEncryptedMasterFile(encryptedMasterFile)
+            if len(decryptedMasterFileAccounts) == 0:
+                MASTER_FILE_NAME = os.environ.get("MASTER_FILE_NAME")
+                os.remove(MASTER_FILE_NAME)
+            else:
+                encryptedMasterFile = encryptMasterFile(decryptedMasterFileAccounts)
+                writeEncryptedMasterFile(encryptedMasterFile)
 
             print("Account Successfully deleted!")
         else:

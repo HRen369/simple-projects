@@ -1,3 +1,5 @@
+import os
+
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 
@@ -13,9 +15,10 @@ def main():
         ivHex = iv.hex()
 
         with open(".env","w") as file:
-            file.write('MASTER_FILE_NAME="encryptedMasterFile"')
-            file.write(f'KEY={keyHex}')
-            file.write(f'IV={ivHex}')
+            file.write('MASTER_FILE_NAME="encryptedMasterFile"\n')
+            file.write(f'KEY={keyHex}\n')
+            file.write(f'IV={ivHex}\n')
+            file.write(f'MASTER_PASSWORD="default"\n')
 
 if __name__ == "__main__":
     main()
