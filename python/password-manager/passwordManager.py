@@ -56,6 +56,23 @@ def writeEncryptedMasterFile(encryptedMasterFile):
         file.write(str(encryptedMasterFile.hex()))
 
 # Viewing Accounts Functionality
+
+def choosingAccountIndex(accounts):
+    haveChoice = False
+    while haveChoice == False:
+        ans = input(">")
+        try:
+            intAns = int(ans) - 1
+            if intAns < 0 or intAns > len(accounts)-1:
+                print("-- Invalid Input --")
+            else:   
+                return intAns
+        except ValueError:
+            if ans == "q" or ans == "Q":
+                return -1
+            else:
+                print("-- Invalid input --")
+
 def viewAccount():
 
     encryptedMasterFile = readEncryptedMasterFile()
@@ -78,10 +95,12 @@ def viewAccount():
             print(f"*|   [{i+1}] {websiteName}")
 
         print("__________________________")
-        ans = input(">")
-        intAns = int(ans) - 1
+        accountIndex = choosingAccountIndex(decryptedMasterFileAccounts)
 
-        pickedAccount = decryptedMasterFileAccounts[intAns]
+        if accountIndex == -1:
+            return
+
+        pickedAccount = decryptedMasterFileAccounts[accountIndex]
 
         clear()
         print("__________________________")
