@@ -177,10 +177,12 @@ def deleteAccount():
             print(f"*|   [{i+1}] {websiteName}")
 
         print("__________________________")
-        ans = input(">")
-        intAns = int(ans) - 1
+        
+        accountIndex = choosingAccountIndex(decryptedMasterFileAccounts)
+        if accountIndex == -1:
+            return
 
-        pickedAccount = decryptedMasterFileAccounts[intAns]
+        pickedAccount = decryptedMasterFileAccounts[accountIndex]
 
         clear()
         print("__________________________")
@@ -191,11 +193,11 @@ def deleteAccount():
         print(f"*|   Password: {pickedAccount['password']}")
         print("__________________________")
 
-        ans = input("Are you sure you want to delete (Y/N) > ")
+        ans = input("Are you sure you want to delete (Y) > ")
 
 
         if ans == "y" or ans == "Y":
-            decryptedMasterFileAccounts.pop(intAns)
+            decryptedMasterFileAccounts.pop(accountIndex)
 
             encryptedMasterFile = encryptMasterFile(decryptedMasterFileAccounts)
             writeEncryptedMasterFile(encryptedMasterFile)
@@ -203,7 +205,12 @@ def deleteAccount():
             print("__________________________")
             print("Account Successfully deleted!")
             print("__________________________")
-            input("Press Enter to continue >")        
+            input("Press Enter to continue >")      
+        else:
+            print("__________________________")
+            print("Account NOT deleted!")
+            print("__________________________")
+            input("Press Enter to continue >")     
 
 
 def mainMenuScreen():
