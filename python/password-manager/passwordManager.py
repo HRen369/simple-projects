@@ -119,8 +119,6 @@ def addAccountDetailsScreen():
     clear()
     print("__________________________")
     print("*|Add Account")
-    print("*|-----------------------")
-    print("*|[Q] Quit")
     print("__________________________")
 
 def addAccountDetails():
@@ -145,13 +143,29 @@ def addAccountDetails():
 def addAccount():
     account =  addAccountDetails() #{ "websiteName":"github", "username":"Afv58", "password":"samplePassword"}
 
-    encryptedMasterFile = readEncryptedMasterFile()
-    decryptedMasterFile = decryptMasterFile(encryptedMasterFile)
-    decryptedMasterFile.append(account)
-    
-    encryptedMasterFile = encryptMasterFile(decryptedMasterFile)
-    writeEncryptedMasterFile(encryptedMasterFile)
-    
+    clear()
+    print("__________________________")
+    print("*|Adding Account")
+    print("*|-----------------------")    
+    print(f"*|   Website Name: {account['websiteName']}")
+    print(f"*|   Username: {account['username']}")
+    print(f"*|   Password: {account['password']}")
+    print("__________________________")
+    ans = input("Are you sure you want to add this account (Y) > ")
+    print("__________________________")
+
+    if ans == "y" or ans == "Y":    
+        encryptedMasterFile = readEncryptedMasterFile()
+        decryptedMasterFile = decryptMasterFile(encryptedMasterFile)
+        decryptedMasterFile.append(account)
+
+        encryptedMasterFile = encryptMasterFile(decryptedMasterFile)
+        writeEncryptedMasterFile(encryptedMasterFile)
+
+        print("Account Successfully added!")
+    else:
+        print("Account NOT added!") 
+
     print("__________________________")
     input("Press Enter to continue >")   
 
@@ -194,6 +208,7 @@ def deleteAccount():
         print("__________________________")
 
         ans = input("Are you sure you want to delete (Y) > ")
+        print("__________________________")
 
 
         if ans == "y" or ans == "Y":
@@ -202,15 +217,12 @@ def deleteAccount():
             encryptedMasterFile = encryptMasterFile(decryptedMasterFileAccounts)
             writeEncryptedMasterFile(encryptedMasterFile)
 
-            print("__________________________")
             print("Account Successfully deleted!")
-            print("__________________________")
-            input("Press Enter to continue >")      
         else:
-            print("__________________________")
             print("Account NOT deleted!")
-            print("__________________________")
-            input("Press Enter to continue >")     
+            
+        print("__________________________")
+        input("Press Enter to continue >")     
 
 
 def mainMenuScreen():
