@@ -10,15 +10,16 @@ def main():
     else:
         key = get_random_bytes(32)
         iv = get_random_bytes(16)
+        password = "default"
 
         keyHex = key.hex()
         ivHex = iv.hex()
 
         with open(".env","w") as file:
             file.write('MASTER_FILE_NAME="encryptedMasterFile"\n')
-            file.write(f'KEY={keyHex}\n')
-            file.write(f'IV={ivHex}\n')
-            file.write(f'MASTER_PASSWORD="default"\n')
+            file.write(f'KEY="{keyHex}"\n')
+            file.write(f'IV="{ivHex}"\n')
+            file.write(f'MASTER_PASSWORD="{password}"\n')
 
 if __name__ == "__main__":
     main()

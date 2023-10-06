@@ -3,11 +3,44 @@ import os, json
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 
-from argon2 import PasswordHasher
+from argon2 import PasswordHasher, exceptions
 from dotenv import load_dotenv
 
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 load_dotenv()
+
+def validate():
+    MASTER_PASSWORD = os.environ.get("MASTER_PASSWORD")
+    clear()
+    print("__________________________")
+    print("*|Validate user")
+    print("__________________________")
+    print("Enter the master password >")
+    ans = input("> ")
+
+    ph = PasswordHasher()
+    hash = ph.hash(ans)
+
+    try:
+        if ph.verify(hash,MASTER_PASSWORD) == True:
+            clear()
+            print("__________________________")
+            print("*|Validate user")
+            print("__________________________")
+            print("Validation Successful")
+            print("__________________________")
+            input("Press Enter to continue >")
+            return True
+    except exceptions.VerifyMismatchError:        
+        clear()
+        print("__________________________")
+        print("*|Validate user")
+        print("__________________________")
+        print("Validation Failed")
+        print("__________________________")
+        input("Press Enter to continue >")
+
+        return False
 
 def readEncryptedMasterFile():
     MASTER_FILE_NAME = os.environ.get("MASTER_FILE_NAME")
@@ -55,7 +88,6 @@ def writeEncryptedMasterFile(encryptedMasterFile):
     with open(MASTER_FILE_NAME, "w") as file:
         file.write(str(encryptedMasterFile.hex()))
 
-# Viewing Accounts Functionality
 
 def choosingAccountIndex(accounts):
     haveChoice = False
@@ -73,7 +105,10 @@ def choosingAccountIndex(accounts):
             else:
                 print("-- Invalid input --")
 
+# Viewing Accounts Functionality
 def viewAccount():
+    if validate() == False:
+        return
 
     encryptedMasterFile = readEncryptedMasterFile()
     decryptedMasterFileAccounts = decryptMasterFile(encryptedMasterFile)
@@ -141,6 +176,9 @@ def addAccountDetails():
     }
 
 def addAccount():
+    if validate() == False:
+        return
+
     account =  addAccountDetails() #{ "websiteName":"github", "username":"Afv58", "password":"samplePassword"}
 
     clear()
@@ -170,7 +208,11 @@ def addAccount():
     input("Press Enter to continue >")   
 
 # Deleting Accounts Functionality
-def deleteAccount():
+def deleteAccount():    
+    if validate() == False:
+        return
+
+
     encryptedMasterFile = readEncryptedMasterFile()
     decryptedMasterFileAccounts = decryptMasterFile(encryptedMasterFile)
 
