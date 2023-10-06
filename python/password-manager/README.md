@@ -5,7 +5,7 @@ The functionality involves these main features:
 - Add Accounts
 - Delete Accounts
 
-The master file that contains all of your accounts is encrypted with AES-256 Mode CBC and they are stored locally on your PC.
+The program uses password validation at each option. The master file that contains all of your accounts is encrypted with AES-256 Mode CBC and they are stored locally on your PC.
 
 ## .env
 This program requires you to have a .env file with the following variables.
@@ -15,11 +15,17 @@ This program requires you to have a .env file with the following variables.
 - `MASTER_FILE_NAME`: The name of your encrypted master file.
 
 If you want to get started immediately, you can use `python generateDotEnv.py` to create a default `.env` file. 
-NOTE: There's a basic failsafe that checks if a `.env` file exisits. DO NOT rely on it to work the entire time. Backup your encrypted file before testing it.
+NOTE: the  `generateDotEnv.py` uses a hardcoded master password, changing is recommended. Also, `generateDotEnv.py` checks to see if a `.env` file exsists. Be careful of overriding previous `.env` files. 
 
-## Steps(for Windows 10)
-1. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-2. Scripts\activate.ps1 or Scripts\activate.bat
-3. pip -r requirements.txt
-4. python generateDotEnv.py
-4. python passwordManager.py
+## Set up without env
+1. pip -r requirements.txt
+2. python generateDotEnv.py
+3. python passwordManager.py
+
+## Window Virtual Env Steps(for Windows 10)
+1. python -m venv .
+2. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+3. Scripts\activate.ps1 or Scripts\activate.bat
+4. pip -r requirements.txt
+5. python generateDotEnv.py
+6. python passwordManager.py
