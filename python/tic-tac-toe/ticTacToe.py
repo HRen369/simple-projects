@@ -2,22 +2,34 @@ import os, random
 
 BACKGROUND_WHITE = "\033[47m"
 ENDC = '\033[0m'
-currentLoc = (0,0)
-
-board = [
-    ["-","-","-"],
-    ["-","-","-"],
-    ["-","-","-"]
-]
 
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 
+def emptyBoard():
+    return [
+    ["-","-","-"],
+    ["-","-","-"],
+    ["-","-","-"]
+    ]
 
+
+def printBoard():
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            if (row, col) == currentLoc:
+                print(f"{BACKGROUND_WHITE}{board[row][col]}{ENDC} ",end="")
+            else:
+                print(f"{board[row][col]} ",end="")
+        print()
+
+
+# Validation Functions
 def checkMove(userLabel):
     global currentLoc
     if board[currentLoc[0]][currentLoc[1]] == "-":
         return True
     return False
+
 
 def checkIfWon(userLabel):
     # check rows
@@ -68,15 +80,6 @@ def checkLoc(x,y):
 
     return (x,y)
 
-
-def printBoard():
-    for row in range(len(board)):
-        for col in range(len(board[row])):
-            if (row, col) == currentLoc:
-                print(f"{BACKGROUND_WHITE}{board[row][col]}{ENDC} ",end="")
-            else:
-                print(f"{board[row][col]} ",end="")
-        print()
 
 """
 Rule 1: If I have a winning move, take it. 
@@ -142,30 +145,25 @@ def aiFindCell(userLabel,opponentLabel):
     compBlockMove = aiCrucialLoc(opponentLabel)
     if compBlockMove != (-1,-1):
         return compBlockMove
-    
 
-    #starting move
-    # if board[1][1] == "-":
-    #     pickCenter = random.randint(0,1)
-    #     if pickCenter == 0:
-    #         return (1,1)
-    #     else:
-    #         pass
-    
-    
-    # random move; might remove later
-    # while True:
-    #     x = random.randint(0, len(board)-1)
-    #     y = random.randint(0, len(board)-1)
+    # Starting move
+    if board[1][1] == "-" and random.randint(0,1) == 0:
+        return (1,1)
+    else:
+        pickCorner = random.randint(0,3)
+        if (pickCorner == 0 or pickCorner == 2 ) and board[pickCorner][pickCorner] != "-":
+            return(pickCorner,pickCorner)
+        elif pickCorner == 1 and board[0][2] != "-":
+            return (0,2)
+        elif pickCorner == 3 and board[2][0] != "-":
+            return (2,0)
 
-    #     if board[x][y] == "-":
-    #         return (x,y)
-    #     elif board[y][x] == "-":
-    #         return (y,x)
-    return (1,1)
+    return (-1,-1)
 
 
 def vsComputer():
+    currentLoc = (0,0)
+    board = emptyBoard()
     clear()
 
     haveWon = False
@@ -226,6 +224,9 @@ def vsComputer():
 
 
 def vsHuman():
+    currentLoc = (0,0)
+    board = emptyBoard()
+
     haveWon = False
     player1Label = "X"
     player2Label = "O"
@@ -245,7 +246,6 @@ def vsHuman():
         print("_______")
         ans = input("> ")
 
-        global currentLoc
         if ans == "w":
             currentLoc = checkLoc(currentLoc[0]-1,currentLoc[1])
         elif ans == "s":
