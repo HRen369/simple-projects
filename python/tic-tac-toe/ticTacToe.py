@@ -19,7 +19,6 @@ def checkMove(userLabel):
         return True
     return False
 
-# Need to add other diagonal win condition
 def checkIfWon(userLabel):
     # check rows
     for row in range(len(board)):
@@ -39,8 +38,20 @@ def checkIfWon(userLabel):
         if colCheck == 3:
             return True
 
-    if board[0][0] == userLabel and board[1][1] == userLabel and board[2][2] == userLabel:
-        return True
+        diagonalCheck = 0
+        for num in range(len(board)):
+            if board[num][num] == userLabel:
+                diagonalCheck += 1
+        if diagonalCheck == 3:
+            return True
+
+        diagonalCheck = 0
+        for num in range(len(board)):
+            colNum = len(board) - num-1
+            if board[num][colNum] == userLabel:
+                diagonalCheck += 1
+        if diagonalCheck == 3:
+            return True
 
     return False
 
@@ -82,7 +93,7 @@ def aiCrucialLoc(userLabel):
                 rowCheck += 1
             elif board[row][col] == "-":
                 unusedLoc = col
-        if rowCheck == 2 and board[row][unusedLoc] == "-":
+        if rowCheck == 2:
             return (row,unusedLoc)
     
     # check columns
@@ -94,21 +105,45 @@ def aiCrucialLoc(userLabel):
                 colCheck += 1
             elif board[col][row] == "-":
                 unusedLoc = row
-        if colCheck == 2 and board[col][unusedLoc]:
+        if colCheck == 2:
             return (col,unusedLoc)
+        
+        diagonalCheck = 0
+        for num in range(len(board)):
+            if board[num][num] == userLabel:
+                diagonalCheck += 1
+            elif board[num][num] == "-":
+                unusedLoc = num
+        if diagonalCheck == 2:
+            return (num,num)
 
+        # check both diagonals
+        diagonalCheck = 0
+        for num in range(len(board)):
+            unusedLoc = -1
+            colNum = len(board) - num-1
+            if board[num][colNum] == userLabel:
+                diagonalCheck += 1
+            elif board[num][colNum] == "-":
+                unusedLoc = colNum
+        if diagonalCheck == 2:
+            return (num,colNum)
 
-    # if board[0][0] == userLabel and board[1][1] == userLabel and board[2][2] == userLabel:
-    #     return True
-
-    return (0,0)
+    return (-1,-1)
 
 
 def aiFindCell(userLabel,opponentLabel):
     # Find winning move
+    compWinMove = aiCrucialLoc(userLabel)
+    if compWinMove != (-1,-1):
+        return compWinMove
+
     # Find opponent winning move and block it
-    return aiCrucialLoc(opponentLabel)
+    compBlockMove = aiCrucialLoc(opponentLabel)
+    if compBlockMove != (-1,-1):
+        return compBlockMove
     
+
     #starting move
     # if board[1][1] == "-":
     #     pickCenter = random.randint(0,1)
@@ -127,7 +162,7 @@ def aiFindCell(userLabel,opponentLabel):
     #         return (x,y)
     #     elif board[y][x] == "-":
     #         return (y,x)
-    # return (x,y)
+    return (1,1)
 
 
 def vsComputer():
