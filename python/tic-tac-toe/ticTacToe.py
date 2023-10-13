@@ -3,9 +3,13 @@ import os, random
 BACKGROUND_WHITE = "\033[47m"
 ENDC = '\033[0m'
 
+NO_MOVE = (-2,-2)
+PICKED = (-1,-1)
+
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 
-def emptyBoard():
+
+def createEmptyBoard():
     return [
     ["-","-","-"],
     ["-","-","-"],
@@ -13,11 +17,11 @@ def emptyBoard():
     ]
 
 
-def printBoard(board,currentLoc):
+def printBoard(board,cursorLoc):
     clear()
     for row in range(len(board)):
         for col in range(len(board[row])):
-            if (row, col) == currentLoc:
+            if (row, col) == cursorLoc:
                 print(f"{BACKGROUND_WHITE}{board[row][col]}{ENDC} ",end="")
             else:
                 print(f"{board[row][col]} ",end="")
@@ -26,13 +30,13 @@ def printBoard(board,currentLoc):
 
 
 # Validation Functions
-def checkMove(board,currentLoc):
-    if board[currentLoc[0]][currentLoc[1]] == "-":
+def validateMove(board,chosenLoc):
+    if board[chosenLoc[0]][chosenLoc[1]] == "-":
         return True
     return False
 
 
-def checkIfWon(board,userLabel):
+def validateWin(board,userLabel):
     # check rows
     for row in range(len(board)):
         rowCheck = 0
@@ -69,7 +73,7 @@ def checkIfWon(board,userLabel):
     return False
 
 
-def checkLoc(x,y):
+def validateBounds(x,y):
     if x == 3:
         x -= 1
     elif x == -1:
@@ -82,22 +86,22 @@ def checkLoc(x,y):
     return (x,y)
 
 
-def userOption(ans, currentLoc):
-    if ans == "w":
-        return checkLoc(currentLoc[0]-1,currentLoc[1])
-    elif ans == "s":
-        return checkLoc(currentLoc[0]+1,currentLoc[1])
-    elif ans == "a":
-        return checkLoc(currentLoc[0],currentLoc[1]-1)
-    elif ans == "d":
-        return checkLoc(currentLoc[0],currentLoc[1]+1)
-    elif ans == "" or ans == "m":
+def moveCursor(option, cursorLoc):
+    if option == "w":
+        return validateBounds(cursorLoc[0]-1,cursorLoc[1])
+    elif option == "s":
+        return validateBounds(cursorLoc[0]+1,cursorLoc[1])
+    elif option == "a":
+        return validateBounds(cursorLoc[0],cursorLoc[1]-1)
+    elif option == "d":
+        return validateBounds(cursorLoc[0],cursorLoc[1]+1)
+    elif option == "" or ans == "m":
         return (-1,-1)
     else:
         return (-2,-2)
 
 
-def gameOver(haveWon, turn):
+def gameOverScreen(haveWon, turn):
     if haveWon:
         if (turn-1) % 2 == 0:
             wonLabel = "Player 1"
@@ -116,7 +120,8 @@ Rule 2: If the opponent has a winning move, block it.
 Rule 3: If I can create a fork (two winning ways) after this move, do it.
 """
 # Computer Opponent
-def aiCrucialLoc(userLabel):
+def findCrucialMove(userLabel):
+    
     for row in range(len(board)):
         rowCheck = 0
         unusedLoc = -1
@@ -140,63 +145,64 @@ def aiCrucialLoc(userLabel):
         if colCheck == 2:
             return (col,unusedLoc)
         
-        diagonalCheck = 0
-        for num in range(len(board)):
-            if board[num][num] == userLabel:
-                diagonalCheck += 1
-            elif board[num][num] == "-":
-                unusedLoc = num
-        if diagonalCheck == 2:
-            return (num,num)
+    # check both diagonals
+    diagonalCheck = 0
+    for num in range(len(board)):
+        if board[num][num] == userLabel:
+            diagonalCheck += 1
+        elif board[num][num] == "-":
+            unusedLoc = num
+    if diagonalCheck == 2:
+        return (num,num)
 
-        # check both diagonals
-        diagonalCheck = 0
-        for num in range(len(board)):
-            unusedLoc = -1
-            colNum = len(board) - num-1
-            if board[num][colNum] == userLabel:
-                diagonalCheck += 1
-            elif board[num][colNum] == "-":
-                unusedLoc = colNum
-        if diagonalCheck == 2:
-            return (num,colNum)
+    diagonalCheck = 0
+    for num in range(len(board)):
+        unusedLoc = -1
+        colNum = len(board) - num-1
+        if board[num][colNum] == userLabel:
+            diagonalCheck += 1
+        elif board[num][colNum] == "-":
+            unusedLoc = colNum
+    if diagonalCheck == 2:
+        return (num,colNum)
 
-    return (-1,-1)
+    return NO_MOVE
 
 
 def aiFindCell(userLabel,opponentLabel):
     # Find winning move
-    compWinMove = aiCrucialLoc(userLabel)
-    if compWinMove != (-1,-1):
+    compWinMove = findCrucialMove(userLabel)
+    if compWinMove != NO_MOVE:
         return compWinMove
 
-    # Find opponent winning move and block it
-    compBlockMove = aiCrucialLoc(opponentLabel)
-    if compBlockMove != (-1,-1):
+    # Find Losing move
+    compBlockMove = findCrucialMove(opponentLabel)
+    if compBlockMove != NO_MOVE:
         return compBlockMove
 
-    # Starting move
-    if board[1][1] == "-" and random.randint(0,1) == 0:
-        return (1,1)
-    else:
-        pickCorner = random.randint(0,3)
-        if (pickCorner == 0 or pickCorner == 2 ) and board[pickCorner][pickCorner] != "-":
-            return(pickCorner,pickCorner)
-        elif pickCorner == 1 and board[0][2] != "-":
-            return (0,2)
-        elif pickCorner == 3 and board[2][0] != "-":
-            return (2,0)
+    # # Starting move
+    # if board[1][1] == "-" and random.randint(0,1) == 0:
+    #     return (1,1)
+    # else:
+    #     pickCorner = random.randint(0,3)
+    #     if (pickCorner == 0 or pickCorner == 2 ) and board[pickCorner][pickCorner] != "-":
+    #         return(pickCorner,pickCorner)
+    #     elif pickCorner == 1 and board[0][2] != "-":
+    #         return (0,2)
+    #     elif pickCorner == 3 and board[2][0] != "-":
+    #         return (2,0)
 
-    return (-1,-1)
+    return NO_MOVE
 
 
 def vsComputer():
-    currentLoc = (0,0)
-    board = emptyBoard()
+    cursorLoc = (0,0)
+    board = createEmptyBoard()
 
     haveWon = False
     player1Label = "X"
     player2Label = "O"
+    
     turn = 0
 
     while haveWon == False:
@@ -205,31 +211,31 @@ def vsComputer():
         elif turn % 2 == 0:
             currentLabel = player1Label
 
-            printBoard(board,currentLoc)
+            printBoard(board,cursorLoc)
             ans = input("> ")
-            newCurrLoc = userOption(ans, currentLoc)
+            newCurrLoc = moveCursor(ans, cursorLoc)
 
-            if newCurrLoc == (-1,-1) and checkMove(board,currentLoc):
-                board[currentLoc[0]][currentLoc[1]] = currentLabel
+            if newCurrLoc == (-1,-1) and validateMove(board,cursorLoc):
+                board[cursorLoc[0]][cursorLoc[1]] = currentLabel
                 turn += 1
-            elif newCurrLoc[0] >= 0 and newCurrLoc[0] < 3 and newCurrLoc[1] >= 0  and newCurrLoc[1] < 3:
-                currentLoc = newCurrLoc
+            elif newCurrLoc != PICKED:
+                cursorLoc = newCurrLoc
 
-            haveWon = checkIfWon(board,currentLabel)
+            haveWon = validateWin(board,currentLabel)
         else:
             currentLabel = player2Label
             compCell = aiFindCell(currentLabel,player1Label)
             board[compCell[0]][compCell[1]] = player2Label
-            haveWon = checkIfWon(currentLabel)
+            haveWon = validateWin(currentLabel)
             turn += 1
 
-    printBoard(board,currentLoc)
-    gameOver(turn)
+    printBoard(board,cursorLoc)
+    gameOverScreen(turn)
 
 
 def vsHuman():
-    currentLoc = (0,0)
-    board = emptyBoard()
+    cursorLoc = (0,0)
+    board = createEmptyBoard()
 
     haveWon = False
     player1Label = "X"
@@ -245,20 +251,20 @@ def vsHuman():
         else:
             currentLabel = player2Label
     
-        printBoard(board,currentLoc)
+        printBoard(board,cursorLoc)
         ans = input("> ")
-        newCurrLoc = userOption(ans, currentLoc)
+        newCurrLoc = moveCursor(ans, cursorLoc)
 
-        if newCurrLoc == (-1,-1) and checkMove(board,currentLoc):
-            board[currentLoc[0]][currentLoc[1]] = currentLabel
+        if newCurrLoc == PICKED and validateMove(board,cursorLoc):
+            board[cursorLoc[0]][cursorLoc[1]] = currentLabel
             turn += 1
-        elif newCurrLoc[0] >= 0 and newCurrLoc[0] < 3 and newCurrLoc[1] >= 0  and newCurrLoc[1] < 3:
-            currentLoc = newCurrLoc
+        elif newCurrLoc != PICKED:
+            cursorLoc = newCurrLoc
 
-        haveWon = checkIfWon(board,currentLabel)
+        haveWon = validateWin(board,currentLabel)
     
-    printBoard(board,currentLoc)
-    gameOver(haveWon,turn)
+    printBoard(board,cursorLoc)
+    gameOverScreen(haveWon,turn)
 
 
 def main():
@@ -274,8 +280,7 @@ def main():
         if ans == "1":
             vsHuman()
         elif ans == "2":
-            #vsComputer()
-            pass
+            vsComputer()
         elif ans == "q" or ans == "Q":
             break
 
