@@ -9,19 +9,11 @@ PICKED = (-1,-1)
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 
 
-# def createEmptyBoard():
-#     return [
-#     ["-","-","-"],
-#     ["-","-","-"],
-#     ["-","-","-"]
-#     ]
-
-
 def createEmptyBoard():
     return [
-    ["-","-","O"],
     ["-","-","-"],
-    ["O","-","-"]
+    ["-","-","-"],
+    ["-","-","-"]
     ]
 
 
@@ -103,7 +95,7 @@ def moveCursor(option, cursorLoc):
         return validateBounds(cursorLoc[0],cursorLoc[1]-1)
     elif option == "d":
         return validateBounds(cursorLoc[0],cursorLoc[1]+1)
-    elif option == "" or ans == "m":
+    elif option == "" or option == "m":
         return PICKED
     else:
         return NO_MOVE
@@ -122,11 +114,6 @@ def gameOverScreen(haveWon, turn):
     input(">")
 
 
-"""
-Rule 1: If I have a winning move, take it. 
-Rule 2: If the opponent has a winning move, block it. 
-Rule 3: If I can create a fork (two winning ways) after this move, do it.
-"""
 # Computer Opponent
 def findCrucialMove(board,userLabel):
     for row in range(len(board)):
@@ -143,15 +130,18 @@ def findCrucialMove(board,userLabel):
     # check columns
     for row in range(len(board)):
         colCheck = 0
-        unusedLoc = -1
-        for col in range(len(board[col])):
+        unusedCol = -1
+        unusedRow = -1
+        for col in range(len(board[row])):
             if board[col][row] == userLabel:
                 colCheck += 1
             elif board[col][row] == "-":
-                unusedLoc = row
+                unusedRow = row
+                unusedCol = col
         if colCheck == 2:
-            return (col,unusedLoc)
+            return (unusedCol,unusedRow)
         
+
     # check both diagonals
     diagonalCheck = 0
     unusedRow = -1
@@ -179,7 +169,27 @@ def findCrucialMove(board,userLabel):
     return NO_MOVE
 
 
-def aiFindCell(board,userLabel,opponentLabel):
+def randomMove(board,userLabel):
+    lastCell = NO_MOVE
+    foundInput = False
+
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            if validateMove(board,(row,col)):
+                lastCell = (row,col)
+                if foundInput:
+                    return (row,col)
+            elif board[row][col] == userLabel:
+                foundInput = True 
+
+    return lastCell
+
+"""
+Rule 1: If I have a winning move, take it. 
+Rule 2: If the opponent has a winning move, block it. 
+Rule 3: If I can create a fork (two winning ways) after this move, do it.
+"""
+def aiFindCell(board,turn,userLabel,opponentLabel):
     # Find winning move
     compWinMove = findCrucialMove(board,userLabel)
     if compWinMove != NO_MOVE:
@@ -190,19 +200,20 @@ def aiFindCell(board,userLabel,opponentLabel):
     if compBlockMove != NO_MOVE:
         return compBlockMove
 
-    # # Starting move
-    # if board[1][1] == "-" and random.randint(0,1) == 0:
-    #     return (1,1)
-    # else:
-    #     pickCorner = random.randint(0,3)
-    #     if (pickCorner == 0 or pickCorner == 2 ) and board[pickCorner][pickCorner] != "-":
-    #         return(pickCorner,pickCorner)
-    #     elif pickCorner == 1 and board[0][2] != "-":
-    #         return (0,2)
-    #     elif pickCorner == 3 and board[2][0] != "-":
-    #         return (2,0)
+    # Starting move
+    if turn in [0,1]:
+        if validateMove(board,(1,1)) and random.randint(0,1) == 0:
+            return (1,1)
+        else:
+            cornerLoc = random.randint(0,3)
+            if cornerLoc in [0,2] and validateMove(board,(cornerLoc,cornerLoc)):
+                return(cornerLoc,cornerLoc)
+            elif cornerLoc == 1 and validateMove(board,(0,2)):
+                return (0,2)
+            elif cornerLoc == 3 and validateMove(board,(2,0)):
+                return (2,0)
 
-    return NO_MOVE
+    return randomMove(board,userLabel)
 
 
 def vsComputer():
@@ -234,7 +245,7 @@ def vsComputer():
             haveWon = validateWin(board,currentLabel)
         else:
             currentLabel = player2Label
-            compCell = aiFindCell(board,currentLabel,player1Label)
+            compCell = aiFindCell(board,turn,currentLabel,player1Label)
             board[compCell[0]][compCell[1]] = player2Label
             haveWon = validateWin(board,currentLabel)
             turn += 1
