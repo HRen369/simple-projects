@@ -32,7 +32,7 @@ def getWord():
     return random.choice(wordList)
 
 
-def findLetterLoc(chosenWord, letter):
+def findLetterLocs(chosenWord, letter):
     loc = []
 
     for i in range(len(chosenWord)):
@@ -57,24 +57,6 @@ def addLimb(chances):
             hangmanDict['rightLeg'] = "\\"
 
 
-def gameOverLoss(chosenWord):
-    clear()
-    print("You Lost")
-    printHangman()
-    priny("Word:",chosenWord)
-    print("**--**--**--**--**--**")
-    ans = input("> ")
-
-
-def gameOverWon(chosenWord):
-    clear()
-    print("You Won")
-    printHangman()
-    priny("Word:",chosenWord)
-    print("**--**--**--**--**--**")
-    ans = input("> ")
-
-
 def game():
     chances = 6
     chosenWord = getWord()
@@ -89,7 +71,7 @@ def game():
         ans = input("> ")
 
         if len(ans) == 1 and ans in chosenWord and ans not in guessedLetters:
-            indexes = findLetterLoc(chosenWord, ans)
+            indexes = findLetterLocs(chosenWord, ans)
             for ind in indexes:
                 guessedWord[ind] = ans
 
@@ -104,10 +86,17 @@ def game():
     
         guessedLetters[ans] = True
 
+    clear()
     if chances == 0:
-        gameOverLoss(chosenWord)
+        print("You Lost!")
     else:
-        gameOverWon(chosenWord)
+        print("You Won!")
+    
+    print("**--**--**--**--**--**")
+    printHangman()
+    print("Word:",chosenWord)
+    print("**--**--**--**--**--**")
+    ans = input("> ")
 
 
 def main():
@@ -120,5 +109,5 @@ def main():
     if ans == "1":
         game()
 
-if __name__ == "__main__":
-    game()
+if __name__ == "__main__": 
+    main()
