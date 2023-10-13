@@ -9,11 +9,19 @@ PICKED = (-1,-1)
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 
 
+# def createEmptyBoard():
+#     return [
+#     ["-","-","-"],
+#     ["-","-","-"],
+#     ["-","-","-"]
+#     ]
+
+
 def createEmptyBoard():
     return [
+    ["-","-","O"],
     ["-","-","-"],
-    ["-","-","-"],
-    ["-","-","-"]
+    ["O","-","-"]
     ]
 
 
@@ -64,7 +72,7 @@ def validateWin(board,userLabel):
 
         diagonalCheck = 0
         for num in range(len(board)):
-            colNum = len(board) - num-1
+            colNum = len(board) - num - 1
             if board[num][colNum] == userLabel:
                 diagonalCheck += 1
         if diagonalCheck == 3:
@@ -96,9 +104,9 @@ def moveCursor(option, cursorLoc):
     elif option == "d":
         return validateBounds(cursorLoc[0],cursorLoc[1]+1)
     elif option == "" or ans == "m":
-        return (-1,-1)
+        return PICKED
     else:
-        return (-2,-2)
+        return NO_MOVE
 
 
 def gameOverScreen(haveWon, turn):
@@ -120,8 +128,7 @@ Rule 2: If the opponent has a winning move, block it.
 Rule 3: If I can create a fork (two winning ways) after this move, do it.
 """
 # Computer Opponent
-def findCrucialMove(userLabel):
-    
+def findCrucialMove(board,userLabel):
     for row in range(len(board)):
         rowCheck = 0
         unusedLoc = -1
@@ -147,36 +154,39 @@ def findCrucialMove(userLabel):
         
     # check both diagonals
     diagonalCheck = 0
+    unusedRow = -1
     for num in range(len(board)):
         if board[num][num] == userLabel:
             diagonalCheck += 1
         elif board[num][num] == "-":
-            unusedLoc = num
+            unusedRow = num
     if diagonalCheck == 2:
-        return (num,num)
+        return (unusedRow,unusedRow)
 
     diagonalCheck = 0
+    unusedRow = -1
+    unusedCol = -1
     for num in range(len(board)):
-        unusedLoc = -1
         colNum = len(board) - num-1
         if board[num][colNum] == userLabel:
             diagonalCheck += 1
         elif board[num][colNum] == "-":
-            unusedLoc = colNum
+            unusedCol = colNum
+            unusedRow = num
     if diagonalCheck == 2:
-        return (num,colNum)
+        return (unusedRow,unusedCol)
 
     return NO_MOVE
 
 
-def aiFindCell(userLabel,opponentLabel):
+def aiFindCell(board,userLabel,opponentLabel):
     # Find winning move
-    compWinMove = findCrucialMove(userLabel)
+    compWinMove = findCrucialMove(board,userLabel)
     if compWinMove != NO_MOVE:
         return compWinMove
 
     # Find Losing move
-    compBlockMove = findCrucialMove(opponentLabel)
+    compBlockMove = findCrucialMove(board,opponentLabel)
     if compBlockMove != NO_MOVE:
         return compBlockMove
 
@@ -215,7 +225,7 @@ def vsComputer():
             ans = input("> ")
             newCurrLoc = moveCursor(ans, cursorLoc)
 
-            if newCurrLoc == (-1,-1) and validateMove(board,cursorLoc):
+            if newCurrLoc == PICKED and validateMove(board,cursorLoc):
                 board[cursorLoc[0]][cursorLoc[1]] = currentLabel
                 turn += 1
             elif newCurrLoc != PICKED:
@@ -224,13 +234,13 @@ def vsComputer():
             haveWon = validateWin(board,currentLabel)
         else:
             currentLabel = player2Label
-            compCell = aiFindCell(currentLabel,player1Label)
+            compCell = aiFindCell(board,currentLabel,player1Label)
             board[compCell[0]][compCell[1]] = player2Label
-            haveWon = validateWin(currentLabel)
+            haveWon = validateWin(board,currentLabel)
             turn += 1
 
     printBoard(board,cursorLoc)
-    gameOverScreen(turn)
+    gameOverScreen(haveWon,turn)
 
 
 def vsHuman():
