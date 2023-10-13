@@ -1,4 +1,4 @@
-import os
+import json, os,random
 
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 
@@ -27,7 +27,9 @@ def printGuessedWord(guessedWord):
 
 
 def getWord():
-    return "test"
+    wordFile = open('words.json')
+    wordList = json.load(wordFile)
+    return random.choice(wordList)
 
 
 def findLetterLoc(chosenWord, letter):
