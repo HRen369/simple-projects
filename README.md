@@ -15,5 +15,5 @@ In the python folder...
 - Password Manager
 - Hangman
 - Tic Tac Toe (Opponent AI not completetly working)
-- Rock, Paper Scissors (Incomplete)
+- Rock, Paper Scissors
 - Simple Text Fishing Game (Incomplete)
