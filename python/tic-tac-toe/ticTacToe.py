@@ -31,7 +31,7 @@ def printBoard(board,cursorLoc):
 
 # Validation Functions
 def validateMove(board,chosenLoc):
-    if board[chosenLoc[0]][chosenLoc[1]] == "-":
+    if board[chosenLoc[0]][chosenLoc[1]] == "-" and chosenLoc != NO_MOVE:
         return True
     return False
 
@@ -124,21 +124,21 @@ def findCrucialMove(board,userLabel):
                 rowCheck += 1
             elif board[row][col] == "-":
                 unusedLoc = col
-        if rowCheck == 2:
+        if rowCheck == 2 and validateMove(board,(row,unusedLoc)):
             return (row,unusedLoc)
     
     # check columns
     for row in range(len(board)):
         colCheck = 0
-        unusedCol = -1
-        unusedRow = -1
+        unusedCol = -2
+        unusedRow = -2
         for col in range(len(board[row])):
             if board[col][row] == userLabel:
                 colCheck += 1
             elif board[col][row] == "-":
                 unusedRow = row
                 unusedCol = col
-        if colCheck == 2:
+        if colCheck == 2 and validateMove(board,(unusedCol,unusedRow)):
             return (unusedCol,unusedRow)
         
 
