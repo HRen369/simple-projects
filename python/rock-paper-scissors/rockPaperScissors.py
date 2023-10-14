@@ -1,11 +1,20 @@
 import os, random
 from pynput import keyboard
 
+
 BACKGROUND_WHITE = "\033[47m"
 ENDC = '\033[0m'
 
 
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
+
+
+options = ["rock", "paper","scissors"]
+
+
+def pickChoice():
+    return random.choice(options)
+
 
 def printMenu(menu):
     clear()
@@ -31,31 +40,64 @@ def printMenu(menu):
         print("----")
         print("[Esc] Quit")
 
-    print("*-*-*-*-*-*-*-*-*-*-")
-    
+    print("*-*-*-*-*-*-*-*-*-*-")    
     
 
+def displayResults(userChoice):
+    opponent = pickChoice()
+    user = options[userChoice]
+
+    rock = options[0]
+    paper = options[1]
+    scissors = options[2]
+
+    clear()
+    print("*-*-*-*-*-*-*-*-*-*-")    
+    print(f"Y: {user.capitalize()}")
+    print(f"O: {opponent.capitalize()}")
+
+    if user == opponent:
+        print("DRAW!!!")
+    elif user == rock and opponent == paper:
+        print("OPPONENT WON!!!") 
+    elif user == scissors and opponent == rock:
+        print("OPPONENT WON!!!") 
+    elif user == paper and opponent == scissors:
+        print("OPPONENT WON!!!") 
+    elif user == paper and opponent == rock:
+        print("YOU WON!!!") 
+    elif user == rock and opponent == scissors:
+        print("YOU WON!!!")
+    elif user == scissors and opponent == paper:
+        print("YOU WON!!!")
+    print("*-*-*-*-*-*-*-*-*-*-")    
+    input("[Enter] to Continue > ")
+
+
+
 def game():
-    running = True
     menu = 0
     userChoice = -1
 
-    while running:
-        printMenu(menu)
-
-        with keyboard.Events() as events:
-            for event in events:
-                if type(event) == keyboard.Events.Release:
-                    if event.key == keyboard.Key.up and menu > 0:
-                        menu -= 1
-                    elif event.key == keyboard.Key.down and menu < 2:
-                        menu += 1                    
-                    elif event.key == keyboard.Key.esc:
-                        running = False
-                    elif event.key == keyboard.Key.enter:
-                        userChoice = menu                
-                        running = False
+    printMenu(menu)
+    with keyboard.Events() as events:
+        for event in events:
+            if type(event) == keyboard.Events.Release:
+                if event.key == keyboard.Key.up and menu > 0:
+                    menu -= 1
+                elif event.key == keyboard.Key.down and menu < 2:
+                    menu += 1                    
+                elif event.key == keyboard.Key.esc:
                     break
+                elif event.key == keyboard.Key.enter:
+                    userChoice = menu                
+                    break
+            printMenu(menu)
+
+    input() # clear out enter
+    displayResults(userChoice)
+
+    
 
 def main():
     clear()
@@ -76,7 +118,9 @@ def main():
                     startGame = False
                     break
     if startGame:
+        input() # clear out enter
         game()
 
+
 if __name__ == '__main__':
-    game()
+    main()
