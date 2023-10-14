@@ -150,7 +150,7 @@ def findCrucialMove(board,userLabel):
             diagonalCheck += 1
         elif board[num][num] == "-":
             unusedRow = num
-    if diagonalCheck == 2:
+    if diagonalCheck == 2  and validateMove(board,(unusedRow,unusedRow)):
         return (unusedRow,unusedRow)
 
     diagonalCheck = 0
@@ -163,7 +163,7 @@ def findCrucialMove(board,userLabel):
         elif board[num][colNum] == "-":
             unusedCol = colNum
             unusedRow = num
-    if diagonalCheck == 2:
+    if diagonalCheck == 2  and validateMove(board,(unusedRow,unusedCol)):
         return (unusedRow,unusedCol)
 
     return NO_MOVE
