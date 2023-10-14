@@ -51,7 +51,7 @@ def game():
                     elif event.key == keyboard.Key.down and menu < 2:
                         menu += 1                    
                     elif event.key == keyboard.Key.esc:
-                        exit(0)
+                        running = False
                     elif event.key == keyboard.Key.enter:
                         userChoice = menu                
                         running = False
@@ -65,15 +65,18 @@ def main():
     print("[ESC] to Quit")
     print("*-*-*-*-*-*-*-*-*-*-")
 
+    startGame = False
     with keyboard.Events() as events:
         for event in events:
             if type(event) == keyboard.Events.Release:        
                 if event.key == keyboard.Key.enter:
+                    startGame = True
                     break    
                 elif event.key == keyboard.Key.esc:
-                    exit(0)
-                
-    game()
+                    startGame = False
+                    break
+    if startGame:
+        game()
 
 if __name__ == '__main__':
     game()
