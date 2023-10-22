@@ -1,5 +1,15 @@
+import json, random
+
+def getRandomFish():
+    file = open("items.json")
+    data = json.load(file)
+    
+    return random.choice(data)
+
+
 def main():
-    print("Hello World")
+    print(getRandomFish())
+
 
 
 if __name__ == '__main__':
