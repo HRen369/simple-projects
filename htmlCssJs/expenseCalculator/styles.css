@@ -3,21 +3,27 @@ body{
 }
 
 #app{
-    margin-left: 40%;
+    margin-left: 20%;
+}
+label{
+    font-weight: bold;
 }
 
-.add-new-item{
-    text-align: center;
+.info{
+    background-color: #c0bcbc;
+    padding: 0.4em;
+    margin-bottom: 1em;
+    width: 75%;
 }
 
-.center-button{
-    margin-left: 5em;
+.btn-add-exp{
+    margin-bottom: 1em;
 }
 
 table {
     font-family: arial, sans-serif;
     border-collapse:collapse;
-    width: 100%;
+    width: 75%;
 }
   
 td, th {
