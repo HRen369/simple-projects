@@ -16,3 +16,5 @@ In the python folder...
 - Hangman
 - Tic Tac Toe (Opponent AI not completetly working)
 - Rock, Paper Scissors
+- Keylogger (Incomplete)
+- Caesar Cipher (Incomplete)
