@@ -1,9 +1,19 @@
-ROTATE = 6
+ROTATE = 1
 
-LOWER_ALPHABET = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
-UPPER_ALPHABET = ["A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z"]
-SPECIAL_ALPHABET = ["!","@","#","$","%","^","&","*","(",")","-","_","=","+","[","]","{","}","\\","|","'","\"",";",":","/","?",".",">",",","<","`","~","*"]
-TOTAL_ALPHA_LEN = 26 + len(SPECIAL_ALPHABET) 
+ALPHABET = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z", 
+"A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
+"!","@","#","$","%","^","&","*","(",")","-","_","=","+","[","]","{","}","\\","|","'","\"",";",":","/","?",".",">",",","<","`","~","*"]
+
+def findCharInd(char):
+    if char.isupper():
+        return ord(char) - 65 + 26
+    elif char.islower():
+        return ord(char) - 97
+    elif char in SPECIAL_ALPHABET:
+        return findSpecialCharInd(char)
+    else:
+        return -1
+
 
 def findSpecialCharInd(char):
     found = False
@@ -16,35 +26,45 @@ def findSpecialCharInd(char):
 
     return i
 
-def rotateForward(char):
-    if char.isupper():
-        num = ord(char) - 65
-    elif char.islower():
-        num = ord(char) - 97
-    elif char in SPECIAL_ALPHABET:
-        pass
-    else:
-        return -1
-    
-    return (num + ROTATE) % 26 
-
-def rotateBackward(char):
-    return
 
 def encrypt(string):
-    pass
+    encryptString = []
+
+    for char in string:
+        encryptedCharInd = (findCharInd(char) + ROTATE) % len(ALPHABET)
+        encryptString.append(ALPHABET[encryptedCharInd])
+
+    return "".join(encryptString)
+
 
 def decrypt(string):
-    pass
+    decryptString = []
+
+    for char in string:
+        decryptedCharInd = (findCharInd(char) - ROTATE) % len(ALPHABET)
+        decryptString.append(ALPHABET[decryptedCharInd])
+
+    return "".join(decryptString)
+
 
 def testEncrypt():
-    pass
+    arg1 = "azyx"
+    result = "bAzy"
+
+    functResult = encrypt(arg1)
+    print(functResult == result)
 
 def testDecrypt():
-    pass
+    arg1 = "bAzy"
+    result = "azyx"
+
+    functResult = decrypt(arg1)
+    print(functResult == result)
+
 
 def main():
-    print(ord("a"))
+    testEncrypt()
+    testDecrypt()
 
 if __name__ == "__main__":
     main()
