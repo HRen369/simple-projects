@@ -1,8 +1,10 @@
 ROTATE = 1
 
+
 ALPHABET = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z", 
 "A","B","C","D","E","F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z",
 "!","@","#","$","%","^","&","*","(",")","-","_","=","+","[","]","{","}","\\","|","'","\"",";",":","/","?",".",">",",","<","`","~","*"]
+
 
 def findCharInd(char):
     if char.isupper():
@@ -17,13 +19,15 @@ def findCharInd(char):
 
 def findSpecialCharInd(char):
     found = False
-    i = -1
+    i = 52
 
-    while i < len(SPECIAL_ALPHABET) and found == False:
-        if SPECIAL_ALPHABET[i] == char:
+    while i < len(ALPHABET) and found == False:
+        if ALPHABET[i] == char:
             found = True
         i += 1
 
+    if i == 52:
+        return -1
     return i
 
 
@@ -54,6 +58,7 @@ def testEncrypt():
     functResult = encrypt(arg1)
     print(functResult == result)
 
+
 def testDecrypt():
     arg1 = "bAzy"
     result = "azyx"
@@ -65,6 +70,7 @@ def testDecrypt():
 def main():
     testEncrypt()
     testDecrypt()
+
 
 if __name__ == "__main__":
     main()
