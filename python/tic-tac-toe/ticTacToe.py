@@ -1,4 +1,5 @@
 import os, random
+from pynput import keyboard
 
 BACKGROUND_WHITE = "\033[47m"
 ENDC = '\033[0m'
