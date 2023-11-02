@@ -290,13 +290,34 @@ def vsHuman():
 
 
 def main():
+    menuChoice = -1
+    print("Python Tic Tac Toe")
+    print("  [1] Human Vs Human")
+    print("  [2] Human Vs Computer")
+    print("___________")
+
+    with keyboard.Events() as events:
+        for event in events:
+            if type(event) == keyboard.Events.Release:
+                if event.key == keyboard.Key.esc:
+                    menuChoice = 0
+                elif type(event.key) == keyboard._win32.KeyCode and event.key.char == "1":
+                    menuChoice = 1
+                elif type(event.key) == keyboard._win32.KeyCode and event.key.char == "2":
+                    menuChoice = 2
+
+
+            if menuChoice > -1:
+                break
+
+    if menuChoice == 1:
+        vsHuman()
+    elif menuChoice == 2:
+        vsComputer()
+
+def oldMain():
     while True:
         clear()
-        print("Python Tic Tac Toe")
-        print("  [1] Human Vs Human")
-        print("  [2] Human Vs Computer")
-        print("  [q] Quit")
-        print("___________")
         ans = input("> ")
 
         if ans == "1":
