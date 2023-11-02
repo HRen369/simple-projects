@@ -96,8 +96,6 @@ def moveCursor(option, cursorLoc):
         return validateBounds(cursorLoc[0],cursorLoc[1]-1)
     elif option == "d":
         return validateBounds(cursorLoc[0],cursorLoc[1]+1)
-    elif option == "" or option == "m":
-        return PICKED
     else:
         return NO_MOVE
 
@@ -258,33 +256,38 @@ def vsComputer():
 def vsHuman():
     cursorLoc = (0,0)
     board = createEmptyBoard()
+    printBoard(board,cursorLoc)
 
     haveWon = False
     player1Label = "X"
     player2Label = "O"
-
     turn = 0
 
-    while haveWon == False:
-        if turn > 8:
-            break
-        elif turn % 2 == 0:
-            currentLabel = player1Label
-        else:
-            currentLabel = player2Label
-    
-        printBoard(board,cursorLoc)
-        ans = input("> ")
-        newCurrLoc = moveCursor(ans, cursorLoc)
 
-        if newCurrLoc == PICKED and validateMove(board,cursorLoc):
-            board[cursorLoc[0]][cursorLoc[1]] = currentLabel
-            turn += 1
-        elif newCurrLoc != PICKED:
-            cursorLoc = newCurrLoc
+    with keyboard.Events() as events:
+        for event in events:
+            if turn > 8:
+                break
+            elif turn % 2 == 0:
+                currentLabel = player1Label
+            else:
+                currentLabel = player2Label
 
-        haveWon = validateWin(board,currentLabel)
-    
+            if type(event) == keyboard.Events.Release and type(event.key) == keyboard._win32.KeyCode:
+                newCurrLoc = moveCursor(event.key.char, cursorLoc)
+                cursorLoc = cursorLoc if newCurrLoc == NO_MOVE else newCurrLoc
+            elif event.key == keyboard.Key.enter and validateMove(board,cursorLoc):
+                board[cursorLoc[0]][cursorLoc[1]] = currentLabel
+                turn += 1
+            elif event.key == keyboard.Key.esc:
+                break
+
+            printBoard(board,cursorLoc)
+            haveWon = validateWin(board,currentLabel)
+            if haveWon == True:
+                break
+
+
     printBoard(board,cursorLoc)
     gameOverScreen(haveWon,turn)
 
@@ -326,6 +329,41 @@ def oldMain():
             vsComputer()
         elif ans == "q" or ans == "Q":
             break
+
+
+def oldVsHuman():
+    cursorLoc = (0,0)
+    board = createEmptyBoard()
+
+    haveWon = False
+    player1Label = "X"
+    player2Label = "O"
+
+    turn = 0
+
+    while haveWon == False:
+        if turn > 8:
+            break
+        elif turn % 2 == 0:
+            currentLabel = player1Label
+        else:
+            currentLabel = player2Label
+    
+        printBoard(board,cursorLoc)
+        ans = input("> ")
+        newCurrLoc = moveCursor(ans, cursorLoc)
+
+        if newCurrLoc == PICKED and validateMove(board,cursorLoc):
+            board[cursorLoc[0]][cursorLoc[1]] = currentLabel
+            turn += 1
+        elif newCurrLoc != PICKED:
+            cursorLoc = newCurrLoc
+
+        haveWon = validateWin(board,currentLabel)
+    
+    printBoard(board,cursorLoc)
+    gameOverScreen(haveWon,turn)
+
 
 if __name__ == "__main__":
     main()
