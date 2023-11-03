@@ -1,5 +1,6 @@
 import os, random
 from pynput import keyboard
+import msvcrt as kb
 
 BACKGROUND_WHITE = "\033[47m"
 ENDC = '\033[0m'
@@ -110,7 +111,14 @@ def gameOverScreen(haveWon, turn):
     else:
         print("Draw Between Both Players!")
     print("Press Enter to continue")
-    input(">")
+
+    with keyboard.Events() as events:
+        for event in events:
+            if type(event) == keyboard.Events.Release and event.key == keyboard.Key.enter:
+                break
+
+    # clears buffer
+    while kb.kbhit(): kb.getch()
 
 
 # Computer Opponent
@@ -281,12 +289,15 @@ def vsHuman():
                 turn += 1
             elif event.key == keyboard.Key.esc:
                 break
+            
 
             printBoard(board,cursorLoc)
             haveWon = validateWin(board,currentLabel)
             if haveWon == True:
                 break
 
+    # clears buffer
+    while kb.kbhit(): kb.getch()
 
     printBoard(board,cursorLoc)
     gameOverScreen(haveWon,turn)
@@ -312,6 +323,8 @@ def main():
 
             if menuChoice > -1:
                 break
+    # clears buffer
+    while kb.kbhit(): kb.getch()
 
     if menuChoice == 1:
         vsHuman()
