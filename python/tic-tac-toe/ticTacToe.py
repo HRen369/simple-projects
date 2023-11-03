@@ -226,36 +226,41 @@ def aiFindCell(board,turn,userLabel,opponentLabel):
 def vsComputer():
     cursorLoc = (0,0)
     board = createEmptyBoard()
+    printBoard(board,cursorLoc)
 
     haveWon = False
     player1Label = "X"
     player2Label = "O"
-    
     turn = 0
 
-    while haveWon == False:
-        if turn > 8:
-            break
-        elif turn % 2 == 0:
-            currentLabel = player1Label
+    with keyboard.Events() as events:
+        for event in events:
+            if turn > 8:
+                break
+            elif turn % 2 == 0:
+                currentLabel = player1Label
 
-            printBoard(board,cursorLoc)
-            ans = input("> ")
-            newCurrLoc = moveCursor(ans, cursorLoc)
-
-            if newCurrLoc == PICKED and validateMove(board,cursorLoc):
-                board[cursorLoc[0]][cursorLoc[1]] = currentLabel
+                if type(event) == keyboard.Events.Release and type(event.key) == keyboard._win32.KeyCode:
+                    newCurrLoc = moveCursor(event.key.char, cursorLoc)
+                    cursorLoc = cursorLoc if newCurrLoc == NO_MOVE else newCurrLoc
+                elif event.key == keyboard.Key.enter and validateMove(board,cursorLoc):
+                    board[cursorLoc[0]][cursorLoc[1]] = currentLabel
+                    turn += 1
+                elif event.key == keyboard.Key.esc:
+                    break
+            else:
+                currentLabel = player2Label
+                compCell = aiFindCell(board,turn,currentLabel,player1Label)
+                board[compCell[0]][compCell[1]] = player2Label
                 turn += 1
-            elif newCurrLoc != PICKED:
-                cursorLoc = newCurrLoc
+            
+            haveWon = validateWin(board,currentLabel)
+            printBoard(board,cursorLoc)
+            if haveWon == True:
+                break
 
-            haveWon = validateWin(board,currentLabel)
-        else:
-            currentLabel = player2Label
-            compCell = aiFindCell(board,turn,currentLabel,player1Label)
-            board[compCell[0]][compCell[1]] = player2Label
-            haveWon = validateWin(board,currentLabel)
-            turn += 1
+    # clears buffer
+    while kb.kbhit(): kb.getch()
 
     printBoard(board,cursorLoc)
     gameOverScreen(haveWon,turn)
@@ -330,52 +335,6 @@ def main():
         vsHuman()
     elif menuChoice == 2:
         vsComputer()
-
-def oldMain():
-    while True:
-        clear()
-        ans = input("> ")
-
-        if ans == "1":
-            vsHuman()
-        elif ans == "2":
-            vsComputer()
-        elif ans == "q" or ans == "Q":
-            break
-
-
-def oldVsHuman():
-    cursorLoc = (0,0)
-    board = createEmptyBoard()
-
-    haveWon = False
-    player1Label = "X"
-    player2Label = "O"
-
-    turn = 0
-
-    while haveWon == False:
-        if turn > 8:
-            break
-        elif turn % 2 == 0:
-            currentLabel = player1Label
-        else:
-            currentLabel = player2Label
-    
-        printBoard(board,cursorLoc)
-        ans = input("> ")
-        newCurrLoc = moveCursor(ans, cursorLoc)
-
-        if newCurrLoc == PICKED and validateMove(board,cursorLoc):
-            board[cursorLoc[0]][cursorLoc[1]] = currentLabel
-            turn += 1
-        elif newCurrLoc != PICKED:
-            cursorLoc = newCurrLoc
-
-        haveWon = validateWin(board,currentLabel)
-    
-    printBoard(board,cursorLoc)
-    gameOverScreen(haveWon,turn)
 
 
 if __name__ == "__main__":
