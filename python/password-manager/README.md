@@ -19,13 +19,13 @@ NOTE: the  `generateDotEnv.py` uses a hardcoded master password, changing is rec
 
 ## Set up without env
 1. pip -r requirements.txt
-2. python generateDotEnv.py
-3. python passwordManager.py
+2. python `generateDotEnv.py`
+3. python `passwordManager.py`
 
 ## Window Virtual Env Steps(for Windows 10)
 1. python -m venv .
 2. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 3. Scripts\activate.ps1 or Scripts\activate.bat
 4. pip -r requirements.txt
-5. python generateDotEnv.py
-6. python passwordManager.py
+5. python `generateDotEnv.py`
+6. python `passwordManager.py`
