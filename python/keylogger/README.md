@@ -5,6 +5,7 @@ This is a keylogger made with Python. It's a simple program that
 - creates a `keylogged.txt` file
 - appends to the `keylogged.txt` file
 Note that this `keylogged.txt` is in the gitignore
+Use `[Esc]` key to stop the keylogger
 
 ## Set up without env
 1. pip -r requirements.txt
