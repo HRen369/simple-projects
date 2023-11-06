@@ -2,7 +2,7 @@
 This repo contains all of my simple projects
 These projects typially
 - Less than 1500 lines of code
-- Minimal UI and look ugly
+- Minimal UI and look ugly or are a console app
 - Focus more on the fundamentals of the language
 - Avoid heavy usage of libraries and frameworks
 
@@ -16,5 +16,6 @@ In the python folder...
 - Hangman
 - Tic Tac Toe (Opponent AI not completetly working)
 - Rock, Paper Scissors
-- Keylogger (Incomplete)
-- Caesar Cipher (Incomplete)
+- Keylogger
+- Encryptions
+- Chess
