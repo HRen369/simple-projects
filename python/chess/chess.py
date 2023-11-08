@@ -8,8 +8,9 @@ ENDC = '\033[0m'
 SELECTED=  "\033[106m"
 clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 
+CHOSEN = (-1,-1)
 NO_MOVE = (-2,-2)
-
+EXIT = (-9,-9)
 class Piece:
     def __init__(self,color):
         pass
@@ -73,6 +74,34 @@ def printChessBoard(board,cursor):
         print()
         even += 1
 
+# logic of what to do when picked
+def selectNewLoc(board, cursorLoc):
+    with keyboard.Events() as events:
+        for event in events:
+            if type(event) == keyboard.Events.Release and type(event.key) == keyboard._win32.KeyCode:
+                newCurrLoc = moveCursor(event.key.char, cursorLoc)
+                return ursorLoc if newCurrLoc == NO_MOVE else newCurrLoc
+            elif event.key == keyboard.Key.enter and validateMove(board,cursorLoc):
+                return CHOSEN
+            elif event.key == keyboard.Key.esc:
+                return EXIT
+            
+    while kb.kbhit(): kb.getch()
+
+
+def selectPiece(board,cursorLoc):
+    with keyboard.Events() as events:
+        for event in events:
+            if type(event) == keyboard.Events.Release and type(event.key) == keyboard._win32.KeyCode:
+                newCurrLoc = moveCursor(event.key.char, cursorLoc)
+                return ursorLoc if newCurrLoc == NO_MOVE else newCurrLoc
+            elif event.key == keyboard.Key.enter and validateMove(board,cursorLoc):
+                return CHOSEN
+            elif event.key == keyboard.Key.esc:
+                return EXIT
+            
+    while kb.kbhit(): kb.getch()
+
 
 def main():
     clear()
@@ -81,27 +110,21 @@ def main():
     turn = 0
 
     printChessBoard(chessBoard,cursorLoc)
-    with keyboard.Events() as events:
-        for event in events:
-            if type(event) == keyboard.Events.Release and type(event.key) == keyboard._win32.KeyCode:
-                newCurrLoc = moveCursor(event.key.char, cursorLoc)
-                cursorLoc = cursorLoc if newCurrLoc == NO_MOVE else newCurrLoc
-            elif event.key == keyboard.Key.enter and validateMove(board,cursorLoc):
-                board[cursorLoc[0]][cursorLoc[1]] = currentLabel
-                turn += 1
-            elif event.key == keyboard.Key.esc:
-                break
-            
-            printChessBoard(chessBoard,cursorLoc)
+    while True:
+        cursor = selectPiece(chessBoard,cursorLoc)
+        printChessBoard(chessBoard,cursorLoc)
+
+        if cursor == EXIT:
+            break
+        elif cursor != CHOSEN:
+            cursorLoc = cursor
+        else:
+            selectNewLoc(chessBoard, cursorLoc)            
+
+        printChessBoard(chessBoard,cursorLoc)
 
     # clears buffer
     while kb.kbhit(): kb.getch()
-
-    # printChessBoard(board,cursorLoc)
-    # gameOverScreen(haveWon,turn)
-    
-
-    # printChessBoard(chessBoard,currentCursor)
     
     if turn == 0:
         print("***---***---***")   
