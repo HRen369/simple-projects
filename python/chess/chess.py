@@ -11,10 +11,32 @@ clear = lambda : os.system('cls') if os.name == "nt" else os.system('clear')
 CHOSEN = (-1,-1)
 STAY = (-2,-2)
 EXIT = (-9,-9)
-class Piece:
-    def __init__(self,color):
+
+
+class Square:
+    def __init__(self,loc):
+        self.loc = loc
+    
+    def valid():
         pass
- 
+
+class Empty:
+    def __init__(self):
+        pass
+
+    def valid():
+        return True
+
+class Pawn:
+    def __init__(self, loc, color):
+        self.loc = loc
+        self.color = color
+    
+    def valid(self, board, userMove):
+        move = abs(self.loc[0] - cursor[0])
+        if abs(self.loc[0] - cursor[0]) == 2 and type(board[userMove[0]][userMove[1]]) == Empty:
+            return True 
+
 
 def validateBounds(x,y):
     if x == 8:
@@ -75,7 +97,35 @@ def printChessBoard(board,cursor):
         even += 1
 
 
-def selectPiece(board,cursorLoc):
+def selectPieceMove(board, piece, cursor):
+    tempCu = cursor
+    printChessBoard(board,cursor)
+    print(f"PIECE: {piece}")
+    while True:
+        decodedMove = selectLocation(board, cursor)
+        
+        if decodedMove == EXIT:
+            break
+        elif decodedMove != STAY and decodedMove != CHOSEN: 
+            cursor = decodedMove        
+        elif decodedMove ==  CHOSEN:
+            chosenMove = board[cursor[0]][cursor[1]]
+            if chosenMove == " ":
+                board[tempCu[0]][tempCu[1]] = " "
+                board[cursor[0]][cursor[1]] = piece
+                break
+            else:
+                print("INVALID_MOVE")
+        
+        printChessBoard(board,cursor)
+        print(f"PIECE: {piece}")
+        print(f"PIECE_LOC: {tempCu}")
+        print(f"NEW_LOC: {cursor}")
+        print(f"{abs(tempCu[0] - cursor[0])}")
+    while kb.kbhit(): kb.getch()
+
+
+def selectLocation(board,cursorLoc):
     with keyboard.Events() as events:
         for event in events:
             if type(event) == keyboard.Events.Release and type(event.key) == keyboard._win32.KeyCode:
@@ -96,20 +146,33 @@ def main():
     printChessBoard(chessboard, cursor)
 
     while True:
-        decodedMove = selectPiece(chessboard, cursor)
+        decodedMove = selectLocation(chessboard, cursor)
         while kb.kbhit(): kb.getch()
 
         if decodedMove == EXIT:
             break
         elif decodedMove != STAY and decodedMove != CHOSEN: 
             cursor = decodedMove        
-        elif decodedMove ==  CHOSEN: # and validPiece(board, cursor)
+        elif decodedMove ==  CHOSEN: # and validPiece(board, cursor,turn)
             chosenPiece = chessboard[cursor[0]][cursor[1]]
-            selectedSquare(chessboard, piece, cursor)
+            selectPieceMove(chessboard, chosenPiece, cursor)
         printChessBoard(chessboard, cursor)
     
     turn += 1
 
+    # if turn == 0:
+    #     print("***---***---***")   
+    #     print("WHITE's TURN")
+    #     print("***---***---***")   
+    #     print("Piece Selected: ")
+    #     print("Location: ")
+    # elif turn == 1:
+    #     print("***---***---***")   
+    #     print("BLACK's TURN")
+    #     print("***---***---***")   
+    #     print("Piece Selected: ")
+    #     print("Location: ")
+    # turn += 1
 
 if __name__ == '__main__':
     main()
