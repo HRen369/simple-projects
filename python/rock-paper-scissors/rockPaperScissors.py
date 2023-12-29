@@ -1,4 +1,5 @@
 import os, random
+import msvcrt as kb
 from pynput import keyboard
 
 
@@ -79,46 +80,44 @@ def game():
     menu = 0
     userChoice = -1
 
-    printMenu(menu)
-    with keyboard.Events() as events:
-        for event in events:
-            if type(event) == keyboard.Events.Release:
-                if event.key == keyboard.Key.up and menu > 0:
-                    menu -= 1
-                elif event.key == keyboard.Key.down and menu < 2:
-                    menu += 1                    
-                elif event.key == keyboard.Key.esc:
-                    break
-                elif event.key == keyboard.Key.enter:
-                    userChoice = menu                
-                    break
-            printMenu(menu)
+    while True:
+        printMenu(menu)
+        userInput = kb.getch().decode('utf-8')
 
-    input() # clear out enter
+        if userInput == "w" and menu > 0:
+            menu -= 1
+        elif userInput == "s" and menu < 2:
+            menu += 1
+        elif userInput == "\r":
+            userChoice = menu
+            break            
+        if userInput == "q":
+            break
+    
     displayResults(userChoice)
 
     
 
 def main():
-    clear()
-    print("Rock, Paper, Scissors!")
-    print("*-*-*-*-*-*-*-*-*-*-")
-    print("[Enter] to Start")
-    print("[ESC] to Quit")
-    print("*-*-*-*-*-*-*-*-*-*-")
-
     startGame = False
-    with keyboard.Events() as events:
-        for event in events:
-            if type(event) == keyboard.Events.Release:        
-                if event.key == keyboard.Key.enter:
-                    startGame = True
-                    break    
-                elif event.key == keyboard.Key.esc:
-                    startGame = False
-                    break
+    while True:
+        clear()
+        print("Rock, Paper, Scissors!")
+        print("*-*-*-*-*-*-*-*-*-*-")
+        print("[Enter] to Start")
+        print("[Q] to Quit")
+        print("*-*-*-*-*-*-*-*-*-*-")
+
+
+        userInput = kb.getch().decode('utf-8')
+
+        if userInput == "q":
+            break
+        elif userInput == "\r":
+            startGame = True
+            break
+
     if startGame:
-        input() # clear out enter
         game()
 
 
