@@ -57,42 +57,42 @@ class Pawn:
 
 
 # Creat Pieces Methods
-def createWhiteKing():
+def WhiteKing():
     return King("♔")
 
-def createWhiteQueen():
+def WhiteQueen():
     return Queen("♙")
 
-def createWhitePawn():
+def WhiteRook():
     return Rook("♖")
 
-def createWhitePawn():
+def WhiteBishop():
     return Bishop("♗")
 
-def createWhitePawn():
+def WhiteKnight():
     return Knight("♘")
 
-def createWhitePawn():
+def WhitePawn():
     return Pawn("♙")
 
 
 # Black Pieces
-def createBlackKing():
+def BlackKing():
     return King("♚")
 
-def createBlackQueen():
+def BlackQueen():
     return Queen("♚")
 
-def createBlackRook():
+def BlackRook():
     return Rook("♜")
 
-def createBlackBishop():
+def BlackBishop():
     return Bishop("♝")
 
-def createBlackKnight():
+def BlackKnight():
     return Knight("♞")
 
-def createBlackPawn():
+def BlackPawn():
     return Pawn("♟︎")
 
 
