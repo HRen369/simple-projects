@@ -34,8 +34,20 @@ def getRandomLastName():
     return random.choice(lastNames())
 
 
-## Testing Generators
+# Full Name Generators
+def getFullRandomMaleName():
+    return f"{getFullRandomMaleName()} {getRandomLastName()}"
 
+
+def getFullRandomFemaleName():
+    return f"{getFullRandomFemaleName()} {getRandomLastName()}"
+
+
+def getFullRandomName():
+    return f"{getRandomFirstName()} {getRandomLastName()}"
+
+
+## Testing Name Lists and Random Generators
 def testMaleFirstName():
     mFirstNameList = maleFirstNames()
     randomName = getRandomFirstMaleName()
@@ -60,25 +72,49 @@ def testLastName():
         return True
     return False
 
+def testFullRandomMaleName():
+    mFirstName = getRandomFirstMaleName()
+    lastName = getRandomLastName()
+
+    mFirstNameList = maleFirstNames()
+    lastNameList = lastNames()
+
+    if  mFirstName in mFirstNameList and lastName in lastNameList:
+        return True
+    return False
+
+def testFullRandomFemaleName():
+    fFirstName = getRandomFirstFemaleName()
+    lastName = getRandomLastName()
+
+    fFirstNameList = femaleFirstNames()
+    lastNameList = lastNames()
+
+    if  fFirstName in fFirstNameList and lastName in lastNameList:
+        return True
+    return False
+
+def testRandomFullName():
+    firstName = getRandomFirstName()
+    lastName = getRandomLastName()
+
+    firstNameList = maleFirstNames() + femaleFirstNames()
+    lastNameList = lastNames()
+
+    if  firstName in firstNameList and lastName in lastNameList:
+        return True
+    return False
+
+
 def test():
     print("Name Generator")
     print(f"Test Male First Name: {testMaleFirstName()}")
     print(f"Test Female First Name: {testFemaleFirstName()}")
     print(f"Test Last Names: {testLastName()}")
+    print(f"Test Male Full Name:{testFullRandomMaleName()}")
+    print(f"Test Female Full Name:{testFullRandomFemaleName()}")
+    print(f"Test Random Full Name:{testRandomFullName()}")
 
-
-# Full Name Generators
-
-def getFullRandomMaleName():
-    return f"{getFullRandomMaleName()} {getRandomLastName()}"
-
-
-def getFullRandomFemaleName():
-    return f"{getFullRandomFemaleName()} {getRandomLastName()}"
-
-
-def getFullRandomName():
-    return f"{getRandomFirstName()} {getRandomLastName()}"
 
 def main():
     test()
