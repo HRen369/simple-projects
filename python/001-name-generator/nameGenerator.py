@@ -35,15 +35,15 @@ def getRandomLastName():
 
 
 # Full Name Generators
-def getFullRandomMaleName():
-    return f"{getFullRandomMaleName()} {getRandomLastName()}"
+def getRandomFullMaleName():
+    return f"{getRandomFirstMaleName()} {getRandomLastName()}"
 
 
-def getFullRandomFemaleName():
-    return f"{getFullRandomFemaleName()} {getRandomLastName()}"
+def getRandomFullFemaleName():
+    return f"{getRandomFirstFemaleName()} {getRandomLastName()}"
 
 
-def getFullRandomName():
+def getRandomFullName():
     return f"{getRandomFirstName()} {getRandomLastName()}"
 
 
@@ -64,7 +64,7 @@ def testFemaleFirstName():
         return True
     return False
 
-def testLastName():
+def testRandomLastName():
     lastNameList = lastNames()
     randomName = getRandomLastName()
 
@@ -72,31 +72,34 @@ def testLastName():
         return True
     return False
 
-def testFullRandomMaleName():
-    mFirstName = getRandomFirstMaleName()
-    lastName = getRandomLastName()
+def testRandomMaleFullName():
+    fullName = getRandomFullMaleName().split()
+    firstName = fullName[0]
+    lastName = fullName[1]
 
     mFirstNameList = maleFirstNames()
     lastNameList = lastNames()
 
-    if  mFirstName in mFirstNameList and lastName in lastNameList:
+    if firstName in mFirstNameList and lastName in lastNameList:
         return True
     return False
 
-def testFullRandomFemaleName():
-    fFirstName = getRandomFirstFemaleName()
-    lastName = getRandomLastName()
+def testRandomFemaleFullName():
+    fullName = getRandomFullFemaleName().split()
+    firstName = fullName[0]
+    lastName = fullName[1]
 
     fFirstNameList = femaleFirstNames()
     lastNameList = lastNames()
 
-    if  fFirstName in fFirstNameList and lastName in lastNameList:
+    if  firstName in fFirstNameList and lastName in lastNameList:
         return True
     return False
 
 def testRandomFullName():
-    firstName = getRandomFirstName()
-    lastName = getRandomLastName()
+    fullName = getRandomFullName().split()
+    firstName = fullName[0]
+    lastName = fullName[1]
 
     firstNameList = maleFirstNames() + femaleFirstNames()
     lastNameList = lastNames()
@@ -110,10 +113,10 @@ def test():
     print("Name Generator")
     print(f"Test Male First Name: {testMaleFirstName()}")
     print(f"Test Female First Name: {testFemaleFirstName()}")
-    print(f"Test Last Names: {testLastName()}")
-    print(f"Test Male Full Name:{testFullRandomMaleName()}")
-    print(f"Test Female Full Name:{testFullRandomFemaleName()}")
-    print(f"Test Random Full Name:{testRandomFullName()}")
+    print(f"Test Last Names: {testRandomLastName()}")
+    print(f"Test Male Full Name: {testRandomMaleFullName()}")
+    print(f"Test Female Full Name: {testRandomFemaleFullName()}")
+    print(f"Test Random Full Name: {testRandomFullName()}")
 
 
 def main():
