@@ -49,6 +49,19 @@ def splitBirthdateString(birthdateString):
     return {"day":-1,"month":-1,"year":-1}
     
 
+def calculateLeapYears(year):
+    leapYears = 0
+    currYear = getTodayDate()['year']
+    if currYear % 4 != 0:
+        currYear -= currYear % 4
+
+    while currYear >= year:
+        if currYear % 100 != 0:
+            leapYears += 1
+            currYear -= 4
+    return leapYears
+
+
 # Calculate User Years in various units
 def calculateAgeInYears(month,day,year):
     currDate = getTodayDate()
@@ -60,7 +73,7 @@ def calculateAgeInYears(month,day,year):
 
 
 def calculateAgeInMonths(month,day,year):
-    pass
+    return calculateAgeInYears(month,day,year) * 12
 
 # Tests
 def testValidateDay():
@@ -116,6 +129,20 @@ def testSplitBirthdateString():
     print(f"Test Wrong BD Input: {expectedWrongInput == splitBirthdateString(testWrongInput)}")
 
 
+# Functions that are primarly used for testing ageIn--()
+#This could be a lamda function with the auto function as a parameter
+def ageInMonthsAuto(userInput):
+    userInput = userInput 
+    birthdateDict = splitBirthdateString(userInput)
+    bMonth = birthdateDict['month']
+    bDay = birthdateDict['day']
+    bYear = birthdateDict['year']
+    
+    if bMonth == -1 or bDay == -1 or bYear == -1:
+        return -1
+    return calculateAgeInMonths(bMonth,bDay,bYear)
+
+
 def ageInYearsAuto(userInput):
     userInput = userInput 
     birthdateDict = splitBirthdateString(userInput)
@@ -137,15 +164,19 @@ def testAgeInYears():
     print(f"Testing Tommarow: {24 == ageInYearsAuto('15-JAN-1999')}")
     
 
+def testAgeInMonths():
+    print("Test Age in Months")
+    # 12 months/year 
+    print(f"Testing Today: {49 == ageInMonthsAuto('14-JAN-2012')}")
+    
+
 def test():
     # testValidateDay()
     # testValidateYear()
     # testValidateMonth()
     # testSplitBirthdateString()
-    testAgeInYears()
-
-
-
+    #testAgeInYears()
+    testAgeInMonths()
 
 def ageInYearsRealUser(userInput):
     userInput = userInput 
@@ -166,7 +197,6 @@ def ageInYearsRealUser(userInput):
 
 def main():
     test()
-    #print(calculateAgeInMonths(bMonth,bDay,bYear))
 
 if __name__ == "__main__":
     main()
