@@ -1,6 +1,5 @@
 import random
 
-GAMES_NUM = 10
 
 def flipCoin():
     if int(random.random() * 100) + 1 > 50:
@@ -20,10 +19,10 @@ def printResults(heads, tails):
         print("Draw")
 
 
-def main():
+def playGame(games):
     heads = 0
     tails = 0
-    for i in range(GAMES_NUM):
+    for i in range(games):
         if flipCoin():
             heads += 1
         else:
@@ -31,5 +30,10 @@ def main():
 
     printResults(heads,tails)
 
+
+def main():
+    game()
+
+    
 if __name__ == "__main__":
     main()
