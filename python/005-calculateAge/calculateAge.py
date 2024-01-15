@@ -1,5 +1,6 @@
 from datetime import datetime
-import json
+import json,calendar
+
 
 def getTodayDate():
     return {
@@ -11,28 +12,21 @@ def getTodayDate():
     "hour": datetime.now().hour,
 }
 
-# Validation 
-def validateDay(monthLimit, day):
-    return day > 0 and day < monthLimit
+
+def getTestDate():
+    return {
+    "day":datetime.now().day,
+    "month":datetime.now().month,
+    "year":datetime.now().year,
+    "second":datetime.now().second,
+    "minute": datetime.now().minute,
+    "hour": datetime.now().hour,
+}
 
 
-def validateYear(year):
-    return year > -1 and year < getTodayDate()["year"] + 1
-
-
-def validateMonth(month):
-    return month in json.load(open("months.json","r")).keys()
-
-# Splitting the Birthday String
-def validateSplitString(month,day,year):
-    if validateMonth(month) == False:
-        return {"day":0,"month":-1,"year":0}
-    elif validateYear(year) == False:
-        return {"day":0,"month":0,"year":-1}
-    elif validateDay(json.load(open("months.json","r"))[month]['days'],day) == False:
-        return {"day":-1,"month":0,"year":0}
-    else:
-        return {"day":day,"month":month,"year":year}  
+#Helper Methods
+def getMonthJson():
+    return json.load(open("months.json","r"))
 
 
 def splitBirthdateString(birthdateString):
@@ -62,18 +56,95 @@ def calculateLeapYears(year):
     return leapYears
 
 
+def monthName(monthNum):
+    return calendar.month_name[monthNum].upper()[0:3]
+
+
+# Validation 
+def validateDay(monthLimit, day):
+    return day > 0 and day < monthLimit
+
+
+def validateYear(year):
+    return year > -1 and year < getTodayDate()["year"] + 1
+
+
+def validateMonth(month):
+    return month in getMonthJson().keys()
+
+# Splitting the Birthday String
+def validateSplitString(month,day,year):
+    if validateMonth(month) == False:
+        return {"day":0,"month":-1,"year":0}
+    elif validateYear(year) == False:
+        return {"day":0,"month":0,"year":-1}
+    elif validateDay(getMonthJson()[month]['days'],day) == False:
+        return {"day":-1,"month":0,"year":0}
+    else:
+        return {"day":day,"month":month,"year":year}  
+
+
 # Calculate User Years in various units
 def calculateAgeInYears(month,day,year):
     currDate = getTodayDate()
-    monthNum = json.load(open("months.json","r"))[month]['num']
+    monthNum = getMonthJson()[month]['num']
 
     if currDate["month"] <= monthNum and currDate['day'] < day:
         year += 1
+    
     return currDate['year'] - year
 
 
 def calculateAgeInMonths(month,day,year):
-    return calculateAgeInYears(month,day,year) * 12
+    currDate = getTodayDate()
+    monthNum = getMonthJson()[month]['num']
+
+    years = currDate['year'] - year 
+    if currDate["month"] <= monthNum and currDate['day'] < day:
+        return ((years - 1)*12) + (12 - monthNum)
+    return years * 12
+
+
+def calculateAgeInDays(month,day,year):
+    return 12*calculateAgeInYears(month,day,year)*365 + calculateLeapYears(year)
+
+def calculateAgeInHours(month,day,year):
+    return calculateAgeInDays(month,day,year) * 24
+
+def calculateAgeInMinutes(month,day,year):
+    return calculateAgeInHours(month,day,year) * 60
+
+def calculateAgeInSeconds(month,day,year):
+    return calculateAgeInMinutes(month,day,year) * 60
+
+def ageIn(funct, userInput):
+    userInput = userInput 
+    birthdateDict = splitBirthdateString(userInput)
+    bMonth = birthdateDict['month']
+    bDay = birthdateDict['day']
+    bYear = birthdateDict['year']
+    
+    if bMonth == -1 or bDay == -1 or bYear == -1:
+        return -1
+    return funct(bMonth,bDay,bYear)
+
+
+def ageInUserInput(funct,userInput):
+    userInput = userInput 
+    birthdateDict = splitBirthdateString(userInput)
+    bMonth = birthdateDict['month']
+    bDay = birthdateDict['day']
+    bYear = birthdateDict['year']
+    
+    if bMonth == -1 or bDay == -1 or bYear == -1:
+        print("ERROR! Your Input is incorrect")
+        print("Please follow the correct format")
+        print("DAY-MONTH-YEAR")
+        print("ex) 9-MAY-2005")
+        print("ex) 21-JUN-2000")
+        exit(0)
+    funct(bMonth,bDay,bYear)
+
 
 # Tests
 def testValidateDay():
@@ -127,78 +198,56 @@ def testSplitBirthdateString():
     print(f"Test Wrong BD Month: {expectedWrongMonth == splitBirthdateString(testWrongMonth)}")
     print(f"Test Wrong BD Year: {expectedWrongYear == splitBirthdateString(testWrongYear)}")
     print(f"Test Wrong BD Input: {expectedWrongInput == splitBirthdateString(testWrongInput)}")
+    print("-----")
 
 
-# Functions that are primarly used for testing ageIn--()
-#This could be a lamda function with the auto function as a parameter
-def ageInMonthsAuto(userInput):
-    userInput = userInput 
-    birthdateDict = splitBirthdateString(userInput)
-    bMonth = birthdateDict['month']
-    bDay = birthdateDict['day']
-    bYear = birthdateDict['year']
-    
-    if bMonth == -1 or bDay == -1 or bYear == -1:
-        return -1
-    return calculateAgeInMonths(bMonth,bDay,bYear)
-
-
-def ageInYearsAuto(userInput):
-    userInput = userInput 
-    birthdateDict = splitBirthdateString(userInput)
-    bMonth = birthdateDict['month']
-    bDay = birthdateDict['day']
-    bYear = birthdateDict['year']
-    
-    if bMonth == -1 or bDay == -1 or bYear == -1:
-        return -1
-    return calculateAgeInYears(bMonth,bDay,bYear)
-
-
-# NOTE THE FOLLOWING DAY THIS TEST IS GOING TO FAIL.
-# I KNOW THE SOLUTION BUT TOO BORED TO FIX IT
 def testAgeInYears():
+    age = 25
+    today = getTodayDate()
+    testYesterday = f'{today['day']}-{monthName(today['month'])}-{today['year']-age}'
+    testToday = f'{today['day']-1}-{monthName(today['month'])}-{today['year']-age}'
+    testTommarrow = f'{today['day']+1}-{monthName(today['month'])}-{today['year']-age}'
+
+    expectedYesterday = age
+    expectedToday = age
+    expectedTommarrow = age - 1
+
     print("Test Age in Years")
-    print(f"Testing Yesterday {25 == ageInYearsAuto('13-JAN-1999')}")
-    print(f"Testing Today: {25 == ageInYearsAuto('14-JAN-1999')}")
-    print(f"Testing Tommarow: {24 == ageInYearsAuto('15-JAN-1999')}")
-    
+    print(f"Testing Yesterday: {expectedYesterday == ageIn(calculateAgeInYears,testYesterday)}")
+    print(f"Testing Today: {expectedToday == ageIn(calculateAgeInYears,testToday)}")
+    print(f"Testing Tommarow: {expectedTommarrow == ageIn(calculateAgeInYears,testTommarrow)}")
+    print("-----")
+
 
 def testAgeInMonths():
-    print("Test Age in Months")
-    # 12 months/year 
-    print(f"Testing Today: {49 == ageInMonthsAuto('14-JAN-2012')}")
-    
+    age = 1
+    today = getTodayDate()
+    testToday = f'{today['day']}-{monthName(today['month'])}-{today['year']-age}'
+    testYesterday = f'{today['day']-1}-{monthName(today['month'])}-{today['year']-age}'
+    testTommarrow = f'{today['day']+1}-{monthName(today['month'])}-{today['year']-age}'
 
+    expectedYesterday = 12#age * 12
+    expectedToday = age * 12
+    expectedTommarrow = 11#age * 11
+    
+    print("Test Age in Months")
+    print(f"Testing Yesterday: {expectedYesterday == ageIn(calculateAgeInMonths,testYesterday)}")
+    print(f"Testing Today: {expectedToday == ageIn(calculateAgeInMonths,testToday)}")
+    print(f"Testing Tommarrow: {expectedTommarrow == ageIn(calculateAgeInMonths,testTommarrow)}")
+
+    
 def test():
     # testValidateDay()
     # testValidateYear()
     # testValidateMonth()
     # testSplitBirthdateString()
-    #testAgeInYears()
+    # testAgeInYears()
     testAgeInMonths()
-
-def ageInYearsRealUser(userInput):
-    userInput = userInput 
-    birthdateDict = splitBirthdateString(userInput)
-    bMonth = birthdateDict['month']
-    bDay = birthdateDict['day']
-    bYear = birthdateDict['year']
-    
-    if bMonth == -1 or bDay == -1 or bYear == -1:
-        print("ERROR! Your Input is incorrect")
-        print("Please follow the correct format")
-        print("DAY-MONTH-YEAR")
-        print("ex) 9-MAY-2005")
-        print("ex) 21-JUN-2000")
-        exit(0)
-    print(calculateAgeInYears(bMonth,bDay,bYear))
 
 
 def main():
     test()
 
+
 if __name__ == "__main__":
     main()
-
-

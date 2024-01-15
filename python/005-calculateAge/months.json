@@ -11,13 +11,40 @@
         "num":3,
         "days":31
     },
-    "APR":4,
-    "MAY":5,
-    "JUN":6,
-    "JUL":7,
-    "AUG":8,
-    "SEP":9,
-    "OCT":10,
-    "NOV":11,
-    "DEC":12
+    "APR":{
+        "num":4,
+        "days":31
+    },
+    "MAY":{
+        "num":5,
+        "days":31
+    },
+    "JUN":{
+        "num":6,
+        "days":31
+    },
+    "JUL":{
+        "num":7,
+        "days":31
+    },
+    "AUG":{
+        "num":8,
+        "days":31
+    },
+    "SEP":{
+        "num":9,
+        "days":31
+    },
+    "OCT":{
+        "num":10,
+        "days":31
+    },
+    "NOV":{
+        "num":11,
+        "days":31
+    },
+    "DEC":{
+        "num":12,
+        "days":31
+    }
 }
