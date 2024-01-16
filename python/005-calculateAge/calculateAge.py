@@ -57,6 +57,11 @@ def calculateLeapYears(year):
 
 
 def monthName(monthNum):
+    if monthNum > 12:
+        monthNum -= 12
+    elif monthNum < 1:
+        monthNum += 12
+    
     return calendar.month_name[monthNum].upper()[0:3]
 
 
@@ -98,12 +103,12 @@ def calculateAgeInYears(month,day,year):
 def calculateAgeInMonths(month,day,year):
     currDate = getTodayDate()
     monthNum = getMonthJson()[month]['num']
+    totalMonths = 12 - monthNum
 
-    years = currDate['year'] - year 
-    if currDate["month"] <= monthNum and currDate['day'] < day:
-        return ((years - 1)*12) + (12 - monthNum)
-    return years * 12
-
+    if day <= currDate['day']:
+        totalMonths += currDate['month']
+        year += 1
+    return totalMonths + (calculateAgeInYears(month,day,year)*12)
 
 def calculateAgeInDays(month,day,year):
     return 12*calculateAgeInYears(month,day,year)*365 + calculateLeapYears(year)
@@ -220,21 +225,46 @@ def testAgeInYears():
 
 
 def testAgeInMonths():
-    age = 1
+    yearsDiff = 1
     today = getTodayDate()
-    testToday = f'{today['day']}-{monthName(today['month'])}-{today['year']-age}'
-    testYesterday = f'{today['day']-1}-{monthName(today['month'])}-{today['year']-age}'
-    testTommarrow = f'{today['day']+1}-{monthName(today['month'])}-{today['year']-age}'
 
-    expectedYesterday = 12#age * 12
-    expectedToday = age * 12
-    expectedTommarrow = 11#age * 11
-    
-    print("Test Age in Months")
-    print(f"Testing Yesterday: {expectedYesterday == ageIn(calculateAgeInMonths,testYesterday)}")
-    print(f"Testing Today: {expectedToday == ageIn(calculateAgeInMonths,testToday)}")
-    print(f"Testing Tommarrow: {expectedTommarrow == ageIn(calculateAgeInMonths,testTommarrow)}")
+    testYOneYearAgo = f"{today['day']-1}-{monthName(today['month'])}-{today['year']-yearsDiff}"
+    testYOneMonthAgo = f"{today['day']-1}-{monthName(today['month']-1)}-{today['year']-yearsDiff}"
+    testYFiveMonthAgo = f"{today['day']-1}-{monthName(today['month']-5)}-{today['year']-yearsDiff}"
+    testYSevenMonthAgo = f"{today['day']-1}-{monthName(today['month']-7)}-{today['year']-yearsDiff}"
+    testYTenMonthAgo = f"{today['day']-1}-{monthName(today['month']-10)}-{today['year']-yearsDiff}"
 
+    testOneYearAgo = f"{today['day']}-{monthName(today['month'])}-{today['year']-yearsDiff}"
+    testOneMonthAgo = f"{today['day']}-{monthName(today['month']-1)}-{today['year']-yearsDiff}"
+    testFiveMonthAgo = f"{today['day']}-{monthName(today['month']-5)}-{today['year']-yearsDiff}"
+    testSevenMonthAgo = f"{today['day']}-{monthName(today['month']-7)}-{today['year']-yearsDiff}"
+    testTenMonthAgo = f"{today['day']}-{monthName(today['month']-10)}-{today['year']-yearsDiff}"
+
+    testTOneYearAgo = f"{today['day']+1}-{monthName(today['month'])}-{today['year']-yearsDiff}"
+    testTOneMonthAgo = f"{today['day']+1}-{monthName(today['month']-1)}-{today['year']-yearsDiff}"
+    testTFiveMonthAgo = f"{today['day']+1}-{monthName(today['month']-5)}-{today['year']-yearsDiff}"
+    testTSevenMonthAgo = f"{today['day']+1}-{monthName(today['month']-7)}-{today['year']-yearsDiff}"
+    testTTenMonthAgo = f"{today['day']+1}-{monthName(today['month']-10)}-{today['year']-yearsDiff}"
+
+
+    print("Testing Age In Months")
+    print(f"Test Yesterday 1  Year   Ago: {12 == ageIn(calculateAgeInMonths,testYOneYearAgo)}")
+    print(f"Test Yesterday 1  Months Ago: {1 == ageIn(calculateAgeInMonths,testYOneMonthAgo)}")
+    print(f"Test Yesterday 5  Months Ago: {5 == ageIn(calculateAgeInMonths,testYFiveMonthAgo)}")
+    print(f"Test Yesterday 7  Months Ago: {7 == ageIn(calculateAgeInMonths,testYSevenMonthAgo)}")
+    print(f"Test Yesterday 10 Months Ago: {10 == ageIn(calculateAgeInMonths,testYTenMonthAgo)}")
+    print("-")
+    print(f"Test Today 1  Year   Ago: {12 == ageIn(calculateAgeInMonths,testOneYearAgo)}")
+    print(f"Test Today 1  Months Ago: {1 == ageIn(calculateAgeInMonths,testOneMonthAgo)}")
+    print(f"Test Today 5  Months Ago: {5 == ageIn(calculateAgeInMonths,testFiveMonthAgo)}")
+    print(f"Test Today 7  Months Ago: {7 == ageIn(calculateAgeInMonths,testSevenMonthAgo)}")
+    print(f"Test Today 10 Months Ago: {10 == ageIn(calculateAgeInMonths,testTenMonthAgo)}")
+    print("-")
+    print(f"Test Tomorrow 1  Year   Ago: {11 == ageIn(calculateAgeInMonths,testTOneYearAgo)}")
+    print(f"Test Tomorrow 1  Months Ago: {0 == ageIn(calculateAgeInMonths,testTOneMonthAgo)}")
+    print(f"Test Tomorrow 5  Months Ago: {4 == ageIn(calculateAgeInMonths,testTFiveMonthAgo)}")
+    print(f"Test Tomorrow 7  Months Ago: {6 == ageIn(calculateAgeInMonths,testTSevenMonthAgo)}")
+    print(f"Test Tomorrow 10 Months Ago: {9 == ageIn(calculateAgeInMonths,testTTenMonthAgo)}")
     
 def test():
     # testValidateDay()
