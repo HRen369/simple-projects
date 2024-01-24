@@ -1,7 +1,3 @@
-# 3 % 0 == Fizz
-# 5 % 0 == Buzz
-# 3 % 0 and 5 % 0 == FizzBuzz
-
 def fizzbuzzSol1(num):
     for i in range(1,num+1):
         if i % 3 == 0 and i % 5 == 0:
@@ -12,6 +8,7 @@ def fizzbuzzSol1(num):
             print("Buzz")
         else:
             print(i)
+
 
 def fizzbuzzSol2(num):
     for i in range(1,num+1):
@@ -27,8 +24,11 @@ def fizzbuzzSol2(num):
             print(numStr)
 
 
+
 def main():
+    fizzbuzzSol1(20)
     fizzbuzzSol2(20)
+
 
 if __name__ == "__main__":
     main()
