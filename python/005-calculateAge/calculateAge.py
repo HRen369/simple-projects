@@ -1,6 +1,7 @@
 from datetime import datetime
 import json,calendar
 
+MONTHS = {"JAN":1,"FEB":2,"MAR":3,"APR":4,"MAY":5,"JUN":6,"JUL":7,"AUG":8,"SEP":9,"OCT":10,"NOV":1,"DEC":12}
 
 def getTodayDate():
     return {
@@ -13,10 +14,6 @@ def getTodayDate():
 }
 
 #Helper Methods
-def getMonthJson():
-    return json.load(open("months.json","r"))
-
-
 def splitBirthdateString(birthdateString):
     birthdateArray = birthdateString.split("-")
 
@@ -30,23 +27,6 @@ def splitBirthdateString(birthdateString):
 
     return {"day":-1,"month":-1,"year":-1}
     
-
-def calculateLeapYears(year):
-    leapYears = 0
-    currDate = getTodayDate()
-    currYear = currDate['year']
-
-    if currYear % 4 != 0:
-        currYear -= currYear % 4
-    elif currDate['month'] <= 2 and currDate['day'] < 29:
-        leapYears -= 1
-
-    while currYear >= year:
-        if currYear % 100 != 0:
-            leapYears += 1
-            currYear -= 4
-    return leapYears
-
 
 def monthName(monthNum):
     if monthNum > 12:
@@ -67,15 +47,17 @@ def validateYear(year):
 
 
 def validateMonth(month):
-    return month in getMonthJson().keys()
+    return month in MONTHS.keys()
 
 # Splitting the Birthday String
 def validateSplitString(month,day,year):
+    _, numberOfDays = calendar.monthrange(year, MONTHS[month])
+
     if validateMonth(month) == False:
         return {"day":0,"month":-1,"year":0}
     elif validateYear(year) == False:
         return {"day":0,"month":0,"year":-1}
-    elif validateDay(getMonthJson()[month]['days'],day) == False:
+    elif validateDay(numberOfDays,day) == False:
         return {"day":-1,"month":0,"year":0}
     else:
         return {"day":day,"month":month,"year":year}  
@@ -84,7 +66,7 @@ def validateSplitString(month,day,year):
 # Calculate User Years in various units
 def calculateAgeInYears(month,day,year):
     currDate = getTodayDate()
-    monthNum = getMonthJson()[month]['num']
+    monthNum = MONTHS[month]
 
     if currDate["month"] <= monthNum and currDate['day'] < day:
         year += 1
@@ -94,7 +76,7 @@ def calculateAgeInYears(month,day,year):
 
 def calculateAgeInMonths(month,day,year):
     currDate = getTodayDate()
-    monthNum = getMonthJson()[month]['num']
+    monthNum = MONTHS[month]
     totalMonths = 12 - monthNum
 
     if day <= currDate['day']:
@@ -107,11 +89,11 @@ def calculateAgeInDays(month,day,year):
     currDate = getTodayDate()
     totalDays = 0
 
-    _, numberOfDays = calendar.monthrange(year,getMonthJson()[month]['num'])
+    _, numberOfDays = calendar.monthrange(year,MONTHS[month])
     totalDays += numberOfDays - day + 1
 
     #months after first month
-    monthTemp = getMonthJson()[month]['num'] + 1
+    monthTemp = MONTHS[month] + 1
     while monthTemp < 13:
         _, numberOfDays = calendar.monthrange(year, monthTemp)
         totalDays += numberOfDays
@@ -306,7 +288,7 @@ def test():
     # testAgeInHours()
     # testAgeInMinutes()
     # testAgeInSeconds()
-
+    pass
 
 def main():
     test()
