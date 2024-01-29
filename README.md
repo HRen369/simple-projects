@@ -12,10 +12,16 @@ In the htmlCssJs contains projects that are created using HTML, CSS and JS.
 - To Do List
 
 In the python folder...
-- Password Manager
-- Hangman
-- Tic Tac Toe (Opponent AI not completetly working)
+- Name Generator
+- Head and Tails Generator
+- Lower and Higher Game
+- Temperature Converter
+- Calculate Age
+- Encryptions (incomplete)
+- Fizz Buzz
 - Rock, Paper Scissors
+- Hangman
+- Password Manager
+- Tic Tac Toe (Opponent AI not completetly working)
 - Keylogger
-- Encryptions
 - Chess
