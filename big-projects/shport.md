@@ -66,9 +66,9 @@ A single webpage to browse the status of your favorite teams and sports
 ### APIs
 - NewsApi
 
-## Game-Schedules
-## Team-Overview
-## League-Standings
-## News-Articles
-## Reddit-Content
-## Signup-and-Login
+## Game Schedules
+## Team Overview
+## League Standings
+## News Articles
+## Reddit Content
+## Signup and Login
