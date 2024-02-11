@@ -16,20 +16,20 @@ To provide a comprehensive consolidation of general sports information
 
 ## Features
 A single webpage to browse the status of your favorite teams and sports
-- ![Game schedules](#Game-Schedules)
+### Game schedules
   - Matchups, start time, venue, live scores
-- ![Team overview](#Team-Overview)
+### Team overview
   - General information for followed teams (roster, injuries, etc.)
-- ![League Standings](#League-Standings)
+### League Standings
   - Displays teams by their rank in their respective league and conference.
-- ![News Articles](#News-Articles)
+### News Articles
   - Source, title, date published, brief description
-- ![Reddit Content](#Reddit-Content)
+### Reddit Content
   - Posts from favorite teams and leagues
-- ![Signup/Login](#Signup-and-Login)
-    - Save preferences for leagues and teams to follow
-    - Customizable dashboard
-    - Salt and Pepper Hashed Password
+### Signup/Login
+  - Save preferences for leagues and teams to follow
+  - Customizable dashboard
+  - Salt and Pepper Hashed Password
 
 ## Tech Stack 
 - MongoDB Cloud
@@ -65,10 +65,3 @@ A single webpage to browse the status of your favorite teams and sports
 
 ### APIs
 - NewsApi
-
-## Game Schedules
-## Team Overview
-## League Standings
-## News Articles
-## Reddit Content
-## Signup and Login
