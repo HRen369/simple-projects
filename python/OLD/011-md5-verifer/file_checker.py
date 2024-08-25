@@ -81,25 +81,31 @@ def self_verify_md5s():
     f.close()
 
 def main():
-    if len(sys.argv) == 1:
-        print("No Commands")
-    elif len(sys.argv) == 2:
-        command = sys.argv[1]
-        if command == "write":
-            write_md5_file()
-        elif command == "write-verify":
-            write_md5_file()
-            self_verify_md5s() 
-        elif command == "verify":
-            verify_md5s("kp")
-        elif command == "delete":
-            os.remove("veri.json")
-        else:
-            print("Not Valid Command")
-    elif sys.argv[1] == "verify" and len(sys.argv) == 3:
-        verify_md5s(sys.argv[2])
+    if len(sys.argv) < 2:
+        print("-- No Commands Given --")
+        exit(1)
+
+    command = sys.argv[1]
+    if command == "write":
+        pass
+        # write_md5_file()
+    elif command == "write-verify":
+        pass
+        # write_md5_file()
+        # self_verify_md5s() 
+    elif command == "verify":
+        pass
+        # verify_md5s("kp")
+    elif command == "delete":
+        pass
+        # os.remove("veri.json")
     else:
-        print("Too many commands")
+        print("Not Valid Command")
+
+
+def writeInterp():
+    pass 
+
 
 if __name__ == '__main__':
     main()
