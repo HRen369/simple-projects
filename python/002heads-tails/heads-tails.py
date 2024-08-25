@@ -19,7 +19,7 @@ def playGames(gameTotals):
     tails = 0
 
     for i in range(gameTotals):
-        if random.uniform(0,1) > 0.5:
+        if random.random() > 0.5:
             heads += 1
         else: 
             tails += 1
