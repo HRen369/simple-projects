@@ -7,10 +7,10 @@ US_FEMALE_FIRST_NAMES = 'usTopFemaleFirstNames'
 US_LAST_NAMES = 'usTopLastNames'
 
 
-def openNameFile(name_type):
+def openNameFile(nameType):
     name_file = open(NAME_FILE)
     name_list = json.load(name_file)
-    return name_list['names'][name_type]
+    return name_list['names'][nameType]
 
 
 # Getters for Name Lists
