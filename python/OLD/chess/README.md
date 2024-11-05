@@ -1,3 +1,0 @@
-# Python Console Chess
-
-## About  
