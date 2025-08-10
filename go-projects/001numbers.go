@@ -81,17 +81,17 @@ func fibonacciLoop(num int) int {
 	var n2 int = 1
 
 	var switchToOther bool = true
-	for i:=3;i<=num;i++{
-		if switchToOther==true{
-			n1 +=n2
-			switchToOther=false
-		}else{
+	for i := 3; i <= num; i++ {
+		if switchToOther == true {
+			n1 += n2
+			switchToOther = false
+		} else {
 			n2 += n1
-			switchToOther=true
+			switchToOther = true
 		}
 	}
 
-	return n1+n2
+	return n1 + n2
 }
 
 /*
@@ -154,8 +154,6 @@ Mortgage Calculator - Calculate the monthly payments of a fixed term mortgage ov
 /*
 Change Return Program - The user enters a cost and then the amount of money given. The program will figure out the change and the number of quarters, dimes, nickels, pennies needed for the change.
 */
-
-// Pennies does not work
 func changeReturn(cost float64, amountGiven float64) map[string]int {
 	var change float64 = amountGiven - cost
 	m := make(map[string]int)
@@ -178,23 +176,22 @@ func changeReturn(cost float64, amountGiven float64) map[string]int {
 			} else {
 				m[numStr] = 1
 			}
-			fmt.Println(change)
 		}
 	}
 	return m
 }
 
 func main() {
-	a := 5
+	// a := 5
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
-	fmt.Printf("%v\n",fibonacci(a))
-	fmt.Printf("%v\n",fibonacciLoop(a))
+	// fmt.Printf("%v\n",fibonacci(a))
+	// fmt.Printf("%v\n",fibonacciLoop(a))
 	// fmt.Printf("%v\n",primeFactorization(10))
 	// fmt.Printf("%v\n",nextPrimeNumber(1))
 	// fmt.Printf("%v\n",isPrimeNumber(11))
 	// fmt.Printf("%v\n",findTileCost(5,5,2.50))
-	// fmt.Printf("%v\n",changeReturn(5.20,191.58))
-	//fmt.Printf("%v\n", changeReturn(180.50, 400.30))
+	fmt.Printf("%v\n", changeReturn(5.20, 191.58))
+	fmt.Printf("%v\n", changeReturn(180.50, 400.30))
 
 }

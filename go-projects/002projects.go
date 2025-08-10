@@ -2,7 +2,6 @@ package main
 
 import "fmt"
 
-
 /*99 Bottles
 
 Create a program that prints out every line to the song "99 bottles of beer on the wall."
@@ -12,12 +11,12 @@ Create a program that prints out every line to the song "99 bottles of beer on t
     Remember, when you reach 1 bottle left, the word "bottles" becomes singular.
 */
 
-func _99bottles(){
-	for i:=5;i>2;i--{
-		fmt.Printf("%v bottles of beer on the wall, %v bottles of beer.\nTake one down and pass it around, %v bottles of beer on the wall.\n\n",i,i,i-1)
+func _99bottles() {
+	for i := 5; i > 2; i-- {
+		fmt.Printf("%v bottles of beer on the wall, %v bottles of beer.\nTake one down and pass it around, %v bottles of beer on the wall.\n\n", i, i, i-1)
 	}
 
-	for i:=2;i>2;i--{
+	for i := 2; i > 2; i-- {
 		fmt.Printf("2 bottles of beer on the wall, 2 bottles of beer.\nTake one down and pass it around, 1 bottle of beer on the wall.")
 		fmt.Printf("1 bottle of beer on the wall, 1 bottle of beer.\nTake one down and pass it around, no more bottles of beer on the wall.")
 	}
@@ -26,11 +25,9 @@ func _99bottles(){
 
 }
 
-func main(){
+func main() {
 	_99bottles()
 }
-
-
 
 /*
 Magic 8 Ball
