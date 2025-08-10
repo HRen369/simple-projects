@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 )
 
 /*
@@ -212,8 +213,20 @@ func binaryToDecimal(binaryString string) int {
 	return sum
 }
 
+func decimalToBinary(num int) string {
+	binaryString := []string{}
+
+	for num > 0 {
+		binaryString = append(binaryString, strconv.Itoa(num%2))
+		num /= 2
+	}
+
+	// Need to reverse array before merging
+	return strings.Join(binaryString[:], "")
+}
+
 func main() {
-	a := "0111"
+	a := 727
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
 	// fmt.Printf("%v\n",fibonacci(a))
@@ -225,5 +238,7 @@ func main() {
 	// fmt.Printf("%v\n", mortgageCalculator(a))
 	// fmt.Printf("%v\n", changeReturn(5.20, 191.58))
 	// fmt.Printf("%v\n", changeReturn(180.50, 400.30))
-	fmt.Printf("%v\n", binaryToDecimal(a))
+	// fmt.Printf("%v\n", binaryToDecimal(a))
+	fmt.Printf("%v\n", decimalToBinary(a))
+
 }
