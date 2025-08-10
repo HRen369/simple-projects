@@ -195,8 +195,25 @@ func changeReturn(cost float64, amountGiven float64) map[string]int {
 	return m
 }
 
+/*
+Binary to Decimal and Back Converter - Develop a converter to convert a decimal number to binary or a binary number to its decimal equivalent.
+(0 * 2^3) + (1 * 2^2) + (1 * 2^1) + (1 * 2^0) = 0 + 4 + 2 + 1 = 7
+*/
+
+func binaryToDecimal(binaryString string) int {
+	sum := 0
+	currentPow := float64(len(binaryString)) - 1
+
+	for _, charValue := range binaryString {
+		sum += (int(charValue) - 48) * int(math.Pow(2, currentPow))
+		currentPow -= 1
+
+	}
+	return sum
+}
+
 func main() {
-	a := 5
+	a := "0111"
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
 	// fmt.Printf("%v\n",fibonacci(a))
@@ -205,8 +222,8 @@ func main() {
 	// fmt.Printf("%v\n",nextPrimeNumber(1))
 	// fmt.Printf("%v\n",isPrimeNumber(11))
 	// fmt.Printf("%v\n",findTileCost(5,5,2.50))
-	fmt.Printf("%v\n", mortgageCalculator(a))
+	// fmt.Printf("%v\n", mortgageCalculator(a))
 	// fmt.Printf("%v\n", changeReturn(5.20, 191.58))
 	// fmt.Printf("%v\n", changeReturn(180.50, 400.30))
-
+	fmt.Printf("%v\n", binaryToDecimal(a))
 }
