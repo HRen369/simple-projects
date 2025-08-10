@@ -152,6 +152,20 @@ Mortgage Calculator - Calculate the monthly payments of a fixed term mortgage ov
 */
 
 /*
+Mortgage Calculator - Calculate the monthly payments of a fixed term mortgage over given Nth terms at a given interest rate. Also figure out how long it will take the user to pay back the loan. For added complexity, add an option for users to select the compounding interval (Monthly, Weekly, Daily, Continually).
+*/
+
+func mortgageCalculator(num int) float64 {
+	principal := 300000.0
+	rate := .05 / 12
+	n := 30.0 * 12
+
+	p1 := math.Pow((1 + rate), n)
+
+	return (principal * rate * p1) / (p1 - 1)
+}
+
+/*
 Change Return Program - The user enters a cost and then the amount of money given. The program will figure out the change and the number of quarters, dimes, nickels, pennies needed for the change.
 */
 func changeReturn(cost float64, amountGiven float64) map[string]int {
@@ -182,7 +196,7 @@ func changeReturn(cost float64, amountGiven float64) map[string]int {
 }
 
 func main() {
-	// a := 5
+	a := 5
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
 	// fmt.Printf("%v\n",fibonacci(a))
@@ -191,7 +205,8 @@ func main() {
 	// fmt.Printf("%v\n",nextPrimeNumber(1))
 	// fmt.Printf("%v\n",isPrimeNumber(11))
 	// fmt.Printf("%v\n",findTileCost(5,5,2.50))
-	fmt.Printf("%v\n", changeReturn(5.20, 191.58))
-	fmt.Printf("%v\n", changeReturn(180.50, 400.30))
+	fmt.Printf("%v\n", mortgageCalculator(a))
+	// fmt.Printf("%v\n", changeReturn(5.20, 191.58))
+	// fmt.Printf("%v\n", changeReturn(180.50, 400.30))
 
 }
