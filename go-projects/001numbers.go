@@ -121,6 +121,43 @@ func findTileCost(width float64, height float64, tileCost float64) float64 {
 	return (width * height) * tileCost
 }
 
+/*
+Mortgage Calculator - Calculate the monthly payments of a fixed term mortgage over given Nth terms at a given interest rate. Also figure out how long it will take the user to pay back the loan. For added complexity, add an option for users to select the compounding interval (Monthly, Weekly, Daily, Continually).
+*/
+
+/*
+Change Return Program - The user enters a cost and then the amount of money given. The program will figure out the change and the number of quarters, dimes, nickels, pennies needed for the change.
+*/
+
+// Pennies does not work
+func changeReturn(cost float64, amountGiven float64) map[string]int {
+	var change float64 = amountGiven - cost
+	m := make(map[string]int)
+
+	if change < 0.0 {
+		panic("Did not cover the cost of item.")
+	}
+
+	var denominations = [10]float64{100.00, 50.00, 20.00, 10.00, 5.00, 1.00, 0.25, 0.10, 0.05, 0.01}
+
+	for _, denomination := range denominations {
+		for (change > 0.0 && change-denomination >= denomination) || change-denomination >= 0.0 {
+			change = change - denomination
+
+			numStr := strconv.FormatFloat(denomination, 'f', 2, 64)
+			_, val := m[numStr]
+
+			if val {
+				m[numStr] += 1
+			} else {
+				m[numStr] = 1
+			}
+			fmt.Println(change)
+		}
+	}
+	return m
+}
+
 func main() {
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
@@ -129,5 +166,7 @@ func main() {
 	// fmt.Printf("%v\n",nextPrimeNumber(1))
 	// fmt.Printf("%v\n",isPrimeNumber(11))
 	// fmt.Printf("%v\n",findTileCost(5,5,2.50))
-	fmt.Printf("")
+	// fmt.Printf("%v\n",changeReturn(5.20,191.58))
+	fmt.Printf("%v\n", changeReturn(180.50, 400.30))
+
 }
