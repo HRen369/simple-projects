@@ -68,6 +68,32 @@ func fibonacci(num int) int {
 	return fibonacci(num-1) + fibonacci(num-2)
 }
 
+func fibonacciLoop(num int) int {
+	if num < 0 {
+		panic("Invalid Number. Number needs to greater than 0")
+	}
+
+	if num == 0 || num == 1 {
+		return num
+	}
+
+	var n1 int = 0
+	var n2 int = 1
+
+	var switchToOther bool = true
+	for i:=3;i<=num;i++{
+		if switchToOther==true{
+			n1 +=n2
+			switchToOther=false
+		}else{
+			n2 += n1
+			switchToOther=true
+		}
+	}
+
+	return n1+n2
+}
+
 /*
 Prime Factorization - Have the user enter a number and find all Prime Factors (if there are any) and display them.
 */
@@ -159,14 +185,16 @@ func changeReturn(cost float64, amountGiven float64) map[string]int {
 }
 
 func main() {
+	a := 5
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
-	// fmt.Printf("%v\n",fibonacci(0))
+	fmt.Printf("%v\n",fibonacci(a))
+	fmt.Printf("%v\n",fibonacciLoop(a))
 	// fmt.Printf("%v\n",primeFactorization(10))
 	// fmt.Printf("%v\n",nextPrimeNumber(1))
 	// fmt.Printf("%v\n",isPrimeNumber(11))
 	// fmt.Printf("%v\n",findTileCost(5,5,2.50))
 	// fmt.Printf("%v\n",changeReturn(5.20,191.58))
-	fmt.Printf("%v\n", changeReturn(180.50, 400.30))
+	//fmt.Printf("%v\n", changeReturn(180.50, 400.30))
 
 }
