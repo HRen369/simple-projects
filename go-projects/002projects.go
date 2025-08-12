@@ -25,10 +25,6 @@ func _99bottles() {
 
 }
 
-func main() {
-	_99bottles()
-}
-
 /*
 Magic 8 Ball
 
