@@ -221,7 +221,17 @@ func decimalToBinary(num int) string {
 		num /= 2
 	}
 
-	// Need to reverse array before merging
+	i:=0
+	j:=len(binaryString)-1
+	for i<j{
+		temp:=binaryString[i]
+		binaryString[i] = binaryString[j]
+		binaryString[j] = temp
+
+		i+=1
+		j-=1
+	}
+
 	return strings.Join(binaryString[:], "")
 }
 
