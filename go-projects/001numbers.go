@@ -38,6 +38,19 @@ func factorial(num int) int {
 	return num * factorial(num-1)
 }
 
+func factorialLoop(num int) int {
+	if num < 0 {
+		panic("Not a valid number")
+	}
+
+	sum := 1
+	for i := 1; i <= num; i++ {
+		sum *= i
+	}
+
+	return sum
+}
+
 /*func eToNthDigit()float64 {
 	i := 0
 	// k := 3
@@ -221,22 +234,30 @@ func decimalToBinary(num int) string {
 		num /= 2
 	}
 
-	i:=0
-	j:=len(binaryString)-1
-	for i<j{
-		temp:=binaryString[i]
+	i := 0
+	j := len(binaryString) - 1
+	for i < j {
+		temp := binaryString[i]
 		binaryString[i] = binaryString[j]
 		binaryString[j] = temp
 
-		i+=1
-		j-=1
+		i += 1
+		j -= 1
 	}
 
 	return strings.Join(binaryString[:], "")
 }
 
+/*Calculator - A simple calculator to do basic operators. Make it a scientific calculator for added complexity.*/
+
+/*Alarm Clock - A simple clock where it plays a sound after X number of minutes/seconds or at a particular time.*/
+
+/*Distance Between Two Cities - Calculates the distance between two cities and allows the user to specify a unit of distance. This program may require finding coordinates for the cities like latitude and longitude.*/
+
+/*Credit Card Validator - Takes in a credit card number from a common credit card vendor (Visa, MasterCard, American Express, Discoverer) and validates it to make sure that it is a valid number (look into how credit cards use a checksum).*/
+
 func main() {
-	a := 727
+	a := 5
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
 	// fmt.Printf("%v\n",fibonacci(a))
@@ -249,6 +270,7 @@ func main() {
 	// fmt.Printf("%v\n", changeReturn(5.20, 191.58))
 	// fmt.Printf("%v\n", changeReturn(180.50, 400.30))
 	// fmt.Printf("%v\n", binaryToDecimal(a))
-	fmt.Printf("%v\n", decimalToBinary(a))
+	// fmt.Printf("%v\n", decimalToBinary(a))
+	fmt.Printf("%v\n", factorialLoop(a))
 
 }
