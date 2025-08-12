@@ -256,8 +256,28 @@ func decimalToBinary(num int) string {
 
 /*Credit Card Validator - Takes in a credit card number from a common credit card vendor (Visa, MasterCard, American Express, Discoverer) and validates it to make sure that it is a valid number (look into how credit cards use a checksum).*/
 
+/*Collatz Conjecture - Start with a number n > 1. Find the number of steps it takes to reach one using the following process: If n is even, divide it by 2. If n is odd, multiply it by 3 and add 1.*/
+
+func collatzConjecture(num int) int {
+	if num <= 1 {
+		panic("Number is less than 1")
+	}
+	steps := 0
+
+	for num > 2 {
+		if num%2 == 0 {
+			num = num / 2
+		} else {
+			num = (num * 3) + 1
+		}
+		steps += 1
+	}
+
+	return steps + 1
+}
+
 func main() {
-	a := 5
+	a := 3
 	// fmt.Printf("%v\n", strconv.FormatFloat(piToNthDigit(3), 'f', 3, 64))
 	// eToNthDigit() --- NOT FINISHED -- I'M SO CONFUSED ON HOW TO GET THIS
 	// fmt.Printf("%v\n",fibonacci(a))
@@ -271,6 +291,7 @@ func main() {
 	// fmt.Printf("%v\n", changeReturn(180.50, 400.30))
 	// fmt.Printf("%v\n", binaryToDecimal(a))
 	// fmt.Printf("%v\n", decimalToBinary(a))
-	fmt.Printf("%v\n", factorialLoop(a))
+	// fmt.Printf("%v\n", factorialLoop(a))
+	fmt.Printf("%v\n", collatzConjecture(a))
 
 }
