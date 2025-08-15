@@ -65,22 +65,22 @@ func countVowels(word string) map[string]int {
 /*Check if Palindrome - Checks if the string entered by the user is a palindrome. That is that it reads the same forwards as backwards like “racecar”
  */
 
- func palindrome(word string)bool{
-	i:=0
-	j:=len(word)-1
+func isPalindrome(word string) bool {
+	i := 0
+	j := len(word) - 1
 
-	for i < j{
-		if word[i] != word[j]{
+	for i < j {
+		if word[i] != word[j] {
 			return false
 		}
-		i+=1
-		j-=1
+		i += 1
+		j -= 1
 
 	}
 
 	return true
 	//return reverseString(word) == word
- }
+}
 
 func main() {
 	// a := 3
@@ -101,7 +101,7 @@ func main() {
 	// fizzBuzz(20)
 	// fmt.Printf("%s\n", reverseString("hello"))
 	// fmt.Printf("%s\n", countVowels("hello"))
-	fmt.Printf("%s\n", palindrome("racecar"))
-	fmt.Printf("%s\n", palindrome("hello"))
+	fmt.Printf("%t\n", isPalindrome("racecar"))
+	fmt.Printf("%t\n", isPalindrome("hello"))
 
 }
